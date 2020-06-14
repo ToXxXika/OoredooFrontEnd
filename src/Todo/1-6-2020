@@ -1,0 +1,17 @@
+===================================================================
+Fix LocalStorage and transfert data between components ====== DONE
+Fix DataBase xD
+implement Custom Location calculator
+Add component or Transfert (Main)
+Add component for courser(Main / After Login )
+Add component for Agent Commercial (Main / After Login )
+Add component Commande for Agentcommercial
+Add Courser Timer After Transfert
+Add Constraint in Register Form for buttons
+                                                     ALLLLLLLLLLLLLLLLLERT (((Need to Fix BackEnd Errors ( Produit + Transfert)  //fix GetProducts in ProduitController
+================================================
+Couriser Linked to Personne By CIN
+ Alert = Number of Requests of other boutiques
+ Transfers = Number of Transfers are in the database with Status (EN cours )
+ Produits = Number of Products are in the database with no exception
+

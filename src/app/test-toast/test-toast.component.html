@@ -1,0 +1,29 @@
+<p-table #dt >
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <td>AAAAA</td>
+      <td>AAAAA</td>
+      <td>AAAAA</td>
+      <td>AAAAA</td>
+      <td>AAAAA</td>
+      <td>
+        <button type="button" pButton icon="pi pi-cog"  (click)="menu.toggle($event)"></button>
+        <p-menu  #menu [popup]="true" [model]="items"></p-menu>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" >
+
+    <tr>
+      <td>A</td>
+      <td>A</td>
+      <td>A</td>
+      <td>A</td>
+      <td>
+        <button type="button" pButton icon="pi pi-cog"  (click)="menu.toggle($event)"></button>
+        <p-menu  #menu [popup]="true" [model]="items"></p-menu>
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>

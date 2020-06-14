@@ -1,0 +1,157 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8 ">
+  <div class="separator separator-bottom separator-skew zindex-100">
+    <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+    </svg>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--5 pb-5">
+  <!-- Table -->
+  <div class="row">
+    <div class=" col-sm-1 col-lg-6 col-md-6">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <form role="form">
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-app"></i></span>
+                </div>
+                <input class="form-control" placeholder="Nom utilisateur" type="text" id="Utilisateur" [(ngModel)]="this.Utilisateur" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <!-- ////////// -->
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input class="form-control" placeholder="CIN" type="text" id="CIN" [(ngModel)]="this.CIN" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input class="form-control" placeholder="Nom" type="text" id="Nom" [(ngModel)]="this.Nom" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input class="form-control" placeholder="Prenom" type="text" id="Prenom" [(ngModel)]="this.Prenom" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                </div>
+                <input class="form-control" placeholder="Email" type="email" id="mail" [(ngModel)]="this.m" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                </div>
+                <input class="form-control" placeholder="Mot de passe" type="password" id="Motdepasse" [(ngModel)]="this.MotPasse" [ngModelOptions]="{standalone: true}">
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-primary mt-4" (click)="AjoutPersonne()">Create account</button>
+                  <p-toast key="SS" position="top-right"></p-toast>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+  <!--  <p-table #dt [columns]="columns" [value]="this.Users">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <td *ngFor="let col of columns">
+            {{col.header}}
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-data>
+        <tr>
+          <td>{{data.cin}}</td>
+          <td>{{data.nom}}</td>
+          <td>{{data.prenom}}</td>
+          <td>{{data.username}}</td>
+          <td>
+
+          </td>
+        </tr>
+
+      </ng-template>
+
+    </p-table>-->
+    <div class="table-responsive">
+      <table class="table align-items-center table-dark" >
+        <thead class="thead-dark">
+
+        <tr>
+          <th scope="col">Cin</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Prenom</th>
+          <th scope="col">Role</th>
+          <th scope="col">Utilisateur</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let data of this.Users">
+        <tr>
+          <th scope="row">
+            <div class="media align-items-center">
+              <a href="#" class="avatar rounded-circle mr-3">
+                <img alt="Image placeholder" src="assets/img/theme/bootstrap.jpg">
+              </a>
+              <div class="media-body">
+                <span class="mb-0 text-sm">{{data.cin}}</span>
+              </div>
+            </div>
+          </th>
+          <td>
+           {{data.nom}}
+          </td>
+          <td>
+            <span class="badge badge-dot mr-4">
+            {{data.prenom}}
+            </span>
+
+          </td>
+          <td>
+          {{data.role}}
+          </td>
+          <td>
+           {{data.username}}
+          </td>
+          <td class="text-right">
+            <div ngbDropdown placement="bottom-right">
+              <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
+                <i class="fas fa-ellipsis-v"></i>
+              </a>
+              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                <a class="dropdown-item" (click)="ModifierPersonne()" >Modification</a>
+                <a class="dropdown-item" (click)="SupprimerPersonne()">Suppression</a>
+
+
+              </div>
+            </div>
+          </td>
+        </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
