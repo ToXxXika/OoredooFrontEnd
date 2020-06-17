@@ -1,4 +1,7 @@
 export class Boutique {
-  localisation?;
-  nomBoutique?;
+ id_boutique?;
+ localisation?;
+ nom_boutique?;
+ num_tel_boutique?;
+ 
 }

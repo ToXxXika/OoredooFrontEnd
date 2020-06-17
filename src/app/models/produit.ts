@@ -1,9 +1,8 @@
 export class Produit {
-  reference?;
-  type?;
-  nom?;
+  reference_produit?;
+  libelle?;
   marque?;
-  description?;
   prix?;
-  stock?
+  type?;
+
 }

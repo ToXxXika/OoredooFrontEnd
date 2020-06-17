@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ProduitService} from "../../Services/produit.service";
+import {TransfertService} from '../../Services/transfert.service';
 
 @Component({
   selector: 'app-transfert',
@@ -8,17 +9,23 @@ import {ProduitService} from "../../Services/produit.service";
 })
 export class TransfertComponent implements OnInit {
   MinimumDistance = 10000000;
-  constructor(private ProdService: ProduitService) { }
 
-  JsonReady(){
-    this.ProdService.recupererBoutique().subscribe( dataB=>{
-       for(let i=0 ; i<dataB.length;i++){
-          const Ch= dataB[i].localisation;
+  constructor(private ProdService: ProduitService, private TransfertService: TransfertService) { }
+    // this function is used to save a Transfert after Verification
+    AjouterTransfert(){
+
+  }
+  JsonReady() {
+    this.ProdService.recupererBoutique().subscribe( dataB=> {
+      //filtre de produits et specification
+      for (let i = 0 ; i < dataB.length; i++) {
+          const Ch = dataB[i].localisation;
           //Developpement de Code pour la soustraction du chaine et Extraction du Longtitude Altitude
+         // tslint:disable-next-line:max-line-length
           //par exemple https://www.google.com/maps/place/Ooredoo/@33.8893822,10.0851487,14z/data=!4m8!1    le programme va nous donner 33.8893822 , 10.0851487
           const n = Ch.indexOf('@'); // search for the position of @ in the string
           const dataL = Ch.indexOf('/data'); //search for the position of /data in the string
-          const n1 = Ch.substr(n,(dataL-n)-4).substr(1).indexOf(',');
+          const n1 = Ch.substr(n,( dataL - n ) - 4).substr(1).indexOf(',');
           const Ch4 = Ch.substr(1).substr(n1+1,(Ch.substr(1).length)); //longtitude
           const Ch5 =Ch.substr(1).substring(0,n1);  //Altitude
          const tab = '{\n' +
@@ -49,10 +56,11 @@ export class TransfertComponent implements OnInit {
            '    unit: \'k\'\n' +
            '  }\n' +
            '}';
-           this.ProdService.Location(tab).subscribe( data =>{
+           this.TransfertService.Location(tab).subscribe( data =>{
              if (this.MinimumDistance > data['route']['distance']){
                this.MinimumDistance = data['route']['distance'];
-               console.log('Distance: ' + this.MinimumDistance + ' Time: ' + data['route']['formattedTime'] + ' Localistation: ' + dataB[i].nomBoutique);
+               // tslint:disable-next-line:max-line-length
+               console.log('Distance: ' + this.MinimumDistance + ' Time: ' + data['route']['formattedTime'] + ' Localistation: ' + dataB[i].nom_boutique);
              }
            });
        }
