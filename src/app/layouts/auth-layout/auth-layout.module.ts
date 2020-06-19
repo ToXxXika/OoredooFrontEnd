@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthLayoutRoutes } from './auth-layout.routing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../../pages/login/login.component';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule.forChild(AuthLayoutRoutes),
         FormsModule,
+        ToastModule
 
         // NgbModule
     ],

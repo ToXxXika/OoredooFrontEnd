@@ -13,5 +13,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'tables',         component: TablesComponent },
     { path: 'icons',          component: IconsComponent },
     { path: 'register',       component: RegisterComponent },
-    { path:'Transfert', component:TransfertComponent}
+    { path:'Transfert',     component:TransfertComponent}
 ];

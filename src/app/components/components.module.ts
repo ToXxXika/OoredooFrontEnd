@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from "primeng/button";
 import {TreeTableModule} from 'primeng/treetable';
 import {TableModule} from "primeng/table";
+import { BoutiqueSidebarComponent } from './boutique-sidebar/boutique-sidebar.component';
 
 @NgModule({
     imports: [
@@ -23,12 +24,14 @@ import {TableModule} from "primeng/table";
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    BoutiqueSidebarComponent
   ],
   exports: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    BoutiqueSidebarComponent
   ]
 })
 export class ComponentsModule { }

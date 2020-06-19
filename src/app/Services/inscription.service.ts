@@ -14,6 +14,7 @@ export class InscriptionService {
   private getSpecifiedUser = 'http://localhost:8080/users/getUserByUserName';
   private getUserByrole= 'http://localhost:8080/users/GetUsersByRole';
   private getUserRole = 'http://localhost:8080/users/getUserRole';
+  private getCourser = 'http://localhost:8080/users/getCoursier';
 
   private Result : boolean ;
 
@@ -29,7 +30,10 @@ export class InscriptionService {
     opts = {params: new HttpParams({fromString: `username=${username}`})};
     return this.http.get<any>(this.getSpecifiedUser, opts);
   }
-
+  //cette fonction est utilisée pour récuperer tous les coursiers enregistrés dans la base de données
+  public getCoursier(){
+    return this.http.get<any>(this.getCourser);
+  }
   public GetUserRole(username: string){
     let opts : { params : HttpParams};
     opts ={ params: new HttpParams({fromString:`username=${username}`})};

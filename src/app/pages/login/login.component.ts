@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
             case 'AgentCommercial': {
               //a faire interface d'un Agent Commercial
-              this.router.navigateByUrl('/Dashboard');
+              this.router.navigateByUrl('/boutique');
               break;
 
             }

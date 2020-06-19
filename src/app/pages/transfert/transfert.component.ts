@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProduitService} from "../../Services/produit.service";
 import {TransfertService} from '../../Services/transfert.service';
+import {InscriptionService} from '../../Services/inscription.service';
 
 @Component({
   selector: 'app-transfert',
@@ -9,13 +10,37 @@ import {TransfertService} from '../../Services/transfert.service';
 })
 export class TransfertComponent implements OnInit {
   MinimumDistance = 10000000;
+  TransfertTab : any[]=[];
+  CoursierTab : any[]=[];
+  dateTrans: any;
+  constructor(private ProdService: ProduitService, private TransfertService: TransfertService,private PersonneService: InscriptionService) { }
+    // cette fonction est utilisée pour enregistrer un transfert dans la base de données
+    // if faut prendre en consideration
 
-  constructor(private ProdService: ProduitService, private TransfertService: TransfertService) { }
-    // this function is used to save a Transfert after Verification
-    AjouterTransfert(){
+  getRandomTransferRefernce(min,max){
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random()*(max-min))+min;
+  }
+  AjouterTransfert(){
+    const Reference = "REFT" + this.getRandomTransferRefernce(1000,10000);
+    (document.getElementById("RefTransfert")as HTMLOutputElement).value = Reference ;
+
 
   }
-  JsonReady() {
+  //cette fonction est utilisée pour chargement de données d'utilisateurs
+  LoadCoursiers(){
+    this.PersonneService.getCoursier().subscribe(CoursierData =>{
+      this.CoursierTab= CoursierData ;
+    });
+  }
+  //cette fonction est utilisée pour remplir le tableau dans la page transfertHTML
+   RecuperationTransfert(){
+     this.TransfertService.recupererTransfert().subscribe(TransfertData =>{
+       this.TransfertTab = TransfertData ;
+     });
+   }
+  ExtractionLocation() {
     this.ProdService.recupererBoutique().subscribe( dataB=> {
       //filtre de produits et specification
       for (let i = 0 ; i < dataB.length; i++) {
@@ -67,6 +92,8 @@ export class TransfertComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.LoadCoursiers();
+    this.RecuperationTransfert();
 
   }
 

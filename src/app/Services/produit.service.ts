@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Produit} from '../models/produit';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Transfert} from '../models/Transfert';
 import {Boutique} from '../models/Boutique';
+import {Typeprod} from '../models/typeprod'
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,17 @@ export class ProduitService {
   private UrlProduit = 'http://localhost:8080/Produit/getAllProducts';
   private UrlBoutique = 'http://localhost:8080/Boutique/GetAllBoutiques';
   private UrlgetRef = 'http://localhost:8080/Produit/getRefProd';
+  private UrlTypeProduit = 'http://localhost:8080/Produit/getType';
 
 
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
+  }
+  public recupererBoutiqueProduit(){
+
+  }
+  public getType(){
+    return this.http.get<Typeprod[]>(this.UrlTypeProduit);
   }
 
 

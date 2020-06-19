@@ -15,6 +15,11 @@ import {TableModule} from 'primeng/table';
 import {ButtonModule} from "primeng/button";
 import {MenuModule} from 'primeng/menu';
 import {InputTextModule} from 'primeng/inputtext';
+import {CalendarModule} from 'primeng/calendar';
+import {TransfertComponent} from '../../pages/transfert/transfert.component';
+import {DropdownModule} from 'primeng/dropdown';
+
+
 
 @NgModule({
   imports: [
@@ -28,18 +33,20 @@ import {InputTextModule} from 'primeng/inputtext';
     TableModule,
     ButtonModule,
     MenuModule,
-    InputTextModule
+    InputTextModule,
+    CalendarModule,
+    DropdownModule
 
 
   ],
   declarations: [
     //to delete useless components
-
     DashboardComponent,
     UserProfileComponent,
     TablesComponent,
     IconsComponent,
-    RegisterComponent
+    RegisterComponent,
+    TransfertComponent
   ]
 })
 

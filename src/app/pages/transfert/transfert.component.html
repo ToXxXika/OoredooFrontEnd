@@ -74,9 +74,17 @@
 </span>
           </div>
           <div class="form-group">
-
+           <span class="ui-float-label">
+            <p-calendar id="DateT" showButtonBar="true"></p-calendar>
+             <label for="DateT">DateTransfert</label>
+           </span>
           </div>
-
+          <div class="form-group">
+            <p-dropdown options="{{this.CoursierTab}}" id="DropD"></p-dropdown>
+          </div>
+          <div class="form-group">
+            <button pButton type="button" label="Ajouter Transfert" class="ui-button-raised ui-button-rounded"></button>
+          </div>
         </form>
       </div>
       </div>
