@@ -3,6 +3,7 @@ import {Validators,FormControl,FormGroup,FormBuilder} from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {MessageService} from 'primeng/api';
 import {ProduitService} from '../../Services/produit.service';
+import {Alert} from '../../models/alert';
 
 @Component({
   selector: 'app-boutique',
@@ -14,19 +15,22 @@ export class BoutiqueComponent implements OnInit {
   userform: FormGroup;
 
   submitted: boolean;
-
-  genders: SelectItem[];
   BoutiqueDropdown : any[]=[];
   TypeProdDropdown : any[]=[];
+  MarqueDropdown : any[]=[];
+  MarqueFiltre: string[]=[];
   description: string;
+  T:Alert = new Alert();
   constructor(private fb: FormBuilder, private messageService: MessageService,private ProdService: ProduitService) { }
 
   RemplissageDeDropdown(){
     this.BoutiqueDropdown.push({label:'ListeBoutiques',value:''});
     this.TypeProdDropdown.push({label:'ListeTypes',value:''});
+    this.MarqueDropdown.push({label:'ListeMarque',value:''});
     this.ProdService.recupererBoutique().subscribe( BoutiqueData =>{
       for ( let i=0;i<BoutiqueData.length;i++){
-        this.BoutiqueDropdown.push({label:BoutiqueData[i].nom_boutique,value:BoutiqueData[i].nom_boutique});
+        console.log(BoutiqueData[i].nomBoutique);
+        this.BoutiqueDropdown.push({label:BoutiqueData[i].nomBoutique,value:BoutiqueData[i].id_boutique});
       }
     });
     this.ProdService.getType().subscribe( TypeData => {
@@ -34,19 +38,42 @@ export class BoutiqueComponent implements OnInit {
         this.TypeProdDropdown.push({label:TypeData[i].description,value:TypeData[i].description});
       }
     });
-
+    this.ProdService.recupererProduit().subscribe( data => {
+      for (let i = 0; i < data.length; i++) {
+       //filtrage de marque pour eviter la redondance
+        if (this.MarqueFiltre.indexOf(data[i].marque) == -1) {
+          this.MarqueFiltre.push(data[i].marque);
+        }
+      }
+      for(let j=0;j<this.MarqueFiltre.length;j++){
+        this.MarqueDropdown.push({label:this.MarqueFiltre[j],value: this.MarqueFiltre[j]});
+      }
+    });
   }
 
   ngOnInit(): void {
     this.userform = this.fb.group({
       'Boutique': new FormControl('', Validators.required),
-      'lastname': new FormControl('', Validators.required),
-      'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
-      'description': new FormControl('')
+      'Type': new FormControl('', Validators.required),
+      'Marque': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
     });
     this.RemplissageDeDropdown();
   }
+  //Ajout d'une alert a la table
+  AddAlert(){
+    const InputMarque = this.userform.get('Marque').value ;
+    const InputType = this.userform.get('Type').value;
+    const InputBoutique = this.userform.get('Boutique').value;
+      this.T.idBoutique=InputBoutique;
+      this.T.marque=InputMarque;
+      this.T.type=InputType;
+      this.T.idAlert=1;
+    this.ProdService.saveAlert(this.T);
+
+
+  }
   onSubmit(value: string) {
+         this.AddAlert();
     this.submitted = true;
     this.messageService.add({severity:'info', summary:'Success', detail:'Form Submitted'});
   }

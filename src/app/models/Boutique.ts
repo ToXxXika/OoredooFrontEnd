@@ -1,7 +1,7 @@
 export class Boutique {
  id_boutique?;
  localisation?;
- nom_boutique?;
+ nomBoutique?;
  num_tel_boutique?;
- 
+
 }

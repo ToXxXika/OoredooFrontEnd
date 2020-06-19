@@ -85,7 +85,7 @@ export class TransfertComponent implements OnInit {
              if (this.MinimumDistance > data['route']['distance']){
                this.MinimumDistance = data['route']['distance'];
                // tslint:disable-next-line:max-line-length
-               console.log('Distance: ' + this.MinimumDistance + ' Time: ' + data['route']['formattedTime'] + ' Localistation: ' + dataB[i].nom_boutique);
+               console.log('Distance: ' + this.MinimumDistance + ' Time: ' + data['route']['formattedTime'] + ' Localistation: ' + dataB[i].nomBoutique);
              }
            });
        }

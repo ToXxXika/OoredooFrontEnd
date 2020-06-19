@@ -1,5 +1,5 @@
 export class Produit {
-  reference_produit?;
+  referenceProduit?;
   libelle?;
   marque?;
   prix?;
