@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
     this.Nom='';
     this.Utilisateur='';
     this.CIN='';
+    // need to add NumTel here
   }
   AjoutPersonne() {
     const X = (document.getElementById('CIN') as HTMLInputElement).value;
@@ -45,7 +46,7 @@ export class RegisterComponent implements OnInit {
     this.P.mail = mail;
     this.P.nom = Nom ;
     this.P.prenom = Prenom ;
-    this.P.num_tel = "94190986" ;
+    this.P.numTel = 94190986 ;
 
     console.log(this.P);
     this.inscriptionS.CreerUtilisateur(this.P).subscribe(data => {

@@ -6,6 +6,6 @@ export class Personne {
   prenom?;
   motdepasse?;
   role?;
-  num_tel?;
+  numTel?;
 
 }

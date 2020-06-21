@@ -28,14 +28,15 @@ export class BoutiqueComponent implements OnInit {
     this.TypeProdDropdown.push({label:'ListeTypes',value:''});
     this.MarqueDropdown.push({label:'ListeMarque',value:''});
     this.ProdService.recupererBoutique().subscribe( BoutiqueData =>{
+
       for ( let i=0;i<BoutiqueData.length;i++){
-        console.log(BoutiqueData[i].nomBoutique);
-        this.BoutiqueDropdown.push({label:BoutiqueData[i].nomBoutique,value:BoutiqueData[i].id_boutique});
+        console.log(BoutiqueData[i].idBoutique);
+        this.BoutiqueDropdown.push({label:BoutiqueData[i].nomBoutique,value:BoutiqueData[i].idBoutique});
       }
     });
     this.ProdService.getType().subscribe( TypeData => {
       for( let i=0; i<TypeData.length;i++){
-        this.TypeProdDropdown.push({label:TypeData[i].description,value:TypeData[i].description});
+        this.TypeProdDropdown.push({label:TypeData[i].description,value:TypeData[i].idType});
       }
     });
     this.ProdService.recupererProduit().subscribe( data => {
@@ -53,9 +54,9 @@ export class BoutiqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.userform = this.fb.group({
-      'Boutique': new FormControl('', Validators.required),
-      'Type': new FormControl('', Validators.required),
-      'Marque': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
+      'Boutique': new FormControl(''),
+      'Type': new FormControl(''),
+      'Marque': new FormControl(''),
     });
     this.RemplissageDeDropdown();
   }
@@ -64,20 +65,19 @@ export class BoutiqueComponent implements OnInit {
     const InputMarque = this.userform.get('Marque').value ;
     const InputType = this.userform.get('Type').value;
     const InputBoutique = this.userform.get('Boutique').value;
+    console.log(InputBoutique);
+    console.log(InputType);
       this.T.idBoutique=InputBoutique;
       this.T.marque=InputMarque;
       this.T.type=InputType;
-      this.T.idAlert=1;
+      this.T.idAlert=2;
+      console.log(this.T)
     this.ProdService.saveAlert(this.T);
-
-
   }
   onSubmit(value: string) {
-         this.AddAlert();
+    this.AddAlert();
     this.submitted = true;
-    this.messageService.add({severity:'info', summary:'Success', detail:'Form Submitted'});
+    this.messageService.add({severity:'info', summary:'Success', detail:'AlertAjouté'});
   }
-
-  get diagnostic() { return JSON.stringify(this.userform.value); }
 
 }

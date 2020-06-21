@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
+import {ProduitService} from '../../Services/produit.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,13 +13,15 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
+  public AlertsTab : any[]=[];
 
-  constructor(location: Location,  private element: ElementRef, private router: Router) {
+  constructor(location: Location,  private element: ElementRef, private router: Router,private prodservice:ProduitService) {
     this.location = location;
   }
 
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.getAlerts();
   }
   Logout(){
     //need to Add the specified Item from LocalStorage means i  need to clear Password/Mail and we use Localstorage.removeItem();
@@ -46,6 +49,13 @@ export class NavbarComponent implements OnInit {
         }
     }
     return 'Dashboard';
+  }
+  getAlerts(){
+       this.prodservice.recupererAlert().subscribe( AlertData =>{
+         console.log('Hello')
+         console.log(AlertData[0]['boutiqueByIdBoutique']['nomBoutique']);
+          this.AlertsTab=AlertData ;
+       })
   }
 
 }

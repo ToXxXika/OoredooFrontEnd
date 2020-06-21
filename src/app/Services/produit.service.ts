@@ -14,21 +14,22 @@ export class ProduitService {
   private UrlBoutique = 'http://localhost:8080/Boutique/GetAllBoutiques';
   private UrlgetRef = 'http://localhost:8080/Produit/getRefProd';
   private UrlTypeProduit = 'http://localhost:8080/Produit/getType';
-  private UrlAddAlert = 'http://localhost:8080/Alert/addAlert';
+  private UrlAddAlert = 'http://localhost:8080/Alert/Addalert';
+  private UrlGetAllerts =  'http://localhost:8080/Alert/getAllAlerts';
 
 
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
   }
-  public recupererBoutiqueProduit(){
-
-  }
+  public recupererBoutiqueProduit(){}
   public getType(){
     return this.http.get<Typeprod[]>(this.UrlTypeProduit);
   }
-
-  public saveAlert(T:Alert){
-    return this.http.post(this.UrlAddAlert,T);
+  public recupererAlert(){
+    return this.http.get<Alert[]>(this.UrlGetAllerts);
+  }
+  public saveAlert(T:Alert):Observable<Alert>{
+    return this.http.post<Alert>(this.UrlAddAlert,T);
   }
   public recupererBoutique(){
     return this.http.get<Boutique[]>(this.UrlBoutique);

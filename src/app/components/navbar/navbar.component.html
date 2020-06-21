@@ -52,15 +52,15 @@
             <h6 class="text-overflow m-0">Notifications!</h6>
           </div>
          <!-- <ng-container *ngFor=" let "-->
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-single-02"></i>
-            <span>Profile</span>
+
+          <ng-container *ngFor="let data of this.AlertsTab ">
+          <a routerLinkActive="active" [routerLink]="['/Transfert']"  class="dropdown-item" >
+            <i class="ni ni-user-run"></i>
+            <span>{{data.idAlert}}</span>
+            <span>le Boutique {{data.idBoutique}} a de besoin <mark> {{data.marque}} </mark> et {{data.type}}</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a routerLinkActive="active" [routerLink]="['/login']"  class="dropdown-item" (click)="Logout()">
-            <i class="ni ni-user-run"></i>
-            <span>se déconnecter</span>
-          </a>
+          </ng-container>
         </div>
       </li>
     </ul>

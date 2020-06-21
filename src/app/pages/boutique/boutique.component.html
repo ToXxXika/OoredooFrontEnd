@@ -19,13 +19,7 @@
         <p-message severity="error" *ngIf="!userform.controls['Marque'].valid"></p-message>
       </div>
       <div>
-        <button pButton type="submit" label="Submit" [disabled]="!userform.valid"></button>
-      </div>
-
-      <div style="text-align:center;margin-top:20px" *ngIf="submitted">
-        Form Submitted
-        <br>
-        {{diagnostic}}
+        <button pButton type="submit" label="Submit"></button>
       </div>
     </div>
   </p-panel>
