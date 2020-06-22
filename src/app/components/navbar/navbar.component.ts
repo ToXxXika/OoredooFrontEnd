@@ -26,7 +26,6 @@ export class NavbarComponent implements OnInit {
   Logout(){
     //need to Add the specified Item from LocalStorage means i  need to clear Password/Mail and we use Localstorage.removeItem();
     localStorage.clear();
-
   }
   // this function is used to display the specific User ( Name + Surname )
   getUsername():string{
@@ -36,6 +35,13 @@ export class NavbarComponent implements OnInit {
     }else {
       return Result;
     }
+  }
+  //this function is used to get Value from Specific Notification
+  goToTransfert(x:any){
+    sessionStorage.setItem("Localisation",x['boutiqueByIdBoutique']['localisation']);
+    sessionStorage.setItem("NomBoutique",x['boutiqueByIdBoutique']['nomBoutique']);
+    sessionStorage.setItem("MarqueProduit",x.marque)
+    sessionStorage.setItem("TypeProduit",x.type)
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());

@@ -91,10 +91,16 @@ export class TransfertComponent implements OnInit {
        }
     });
   }
+   getDataFromNavBar(){
+    console.log(sessionStorage.getItem("Localisation"))
+    console.log(sessionStorage.getItem("NomBoutique"));
+    console.log(sessionStorage.getItem("MarqueProduit"));
+    console.log(sessionStorage.getItem("TypeProduit"));
+
+   }
   ngOnInit(): void {
     this.LoadCoursiers();
     this.RecuperationTransfert();
-
   }
 
 }

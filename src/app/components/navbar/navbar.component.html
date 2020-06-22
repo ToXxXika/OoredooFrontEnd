@@ -54,10 +54,9 @@
          <!-- <ng-container *ngFor=" let "-->
 
           <ng-container *ngFor="let data of this.AlertsTab ">
-          <a routerLinkActive="active" [routerLink]="['/Transfert']"  class="dropdown-item" >
+          <a routerLinkActive="active" [routerLink]="['/Transfert']" (click)="goToTransfert(data)" class="dropdown-item" >
             <i class="ni ni-user-run"></i>
-            <span>{{data.idAlert}}</span>
-            <span>le Boutique {{data.idBoutique}} a de besoin <mark> {{data.marque}} </mark> et {{data.type}}</span>
+            <span>le Boutique {{data['boutiqueByIdBoutique']['nomBoutique']}} a de besoin <mark id="X"> {{data.marque}} </mark> et {{data.type}}</span>
           </a>
           <div class="dropdown-divider"></div>
           </ng-container>
