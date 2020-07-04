@@ -1,16 +1,16 @@
-90%Verification de transfert
 Redaction de transfert 0%
-Test l'ajout de transfert 0%
 test l'ajout de commande 0%
 fix le changement dynamique de Dropdown 0%
-verification de l'ajout de Personne ( Admin , Agent Commercial, Coursier) 95%
-verification de login 70%
+100%
 Ajout de Formulaire pour le coursier 0%
 Link between pages 85%
 Ajout Chart
-Contraintes pour les formulaires
+Contraintes pour les formulaires 70 %
 Ajout champs Numero Tel
 ======================================
+AjoutPersonne 100%
+verification de login 100%
+ l'ajout de transfert 100%
 Alert 100% ( Front + Back )
 Table Produit 100%
 Formulaire Commande 100%
@@ -19,3 +19,4 @@ Security 100%
 =======================================
 W filemen Bonne nuit
 ===============================
+tchala5 : idea :

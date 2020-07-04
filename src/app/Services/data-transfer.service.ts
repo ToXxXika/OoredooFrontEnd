@@ -12,7 +12,6 @@ export class DataTransferService {
 
   constructor() { }
   GetObjectAlert(Alert: TestClass){
-    console.log(Alert);
     this.ObejctSource.next(Alert);
 
   }

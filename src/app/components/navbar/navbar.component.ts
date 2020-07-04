@@ -69,6 +69,7 @@ export class NavbarComponent implements OnInit {
                L.idBou = A.idBoutique ;
                L.nomBoutique = A.nomBoutique;
                L.localisation = A.localisation ;
+               L.idAlert = A['alertsByIdBoutique'][i]['idAlert'];
                L.libelle = A['alertsByIdBoutique'][i]['libelle'];
                L.marque = A['alertsByIdBoutique'][i]['marque'];
                L.type = A['alertsByIdBoutique'][i]['type'];

@@ -2,7 +2,6 @@ import {Component, OnInit, QueryList, ViewChildren, AfterViewInit, AfterViewChec
 import {ProduitService} from "../../Services/produit.service";
 import {TransfertService} from '../../Services/transfert.service';
 import {InscriptionService} from '../../Services/inscription.service';
-import {NavbarComponent} from '../../components/navbar/navbar.component';
 import {DataTransferService} from '../../Services/data-transfer.service';
 import {Boutique} from '../../models/Boutique';
 import {Personne} from '../../models/personne';
@@ -10,12 +9,13 @@ import {Transfert} from '../../models/Transfert';
 import {Transfertboutique} from '../../models/transfertboutique';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {TestClass} from '../../models/TestClass';
-import {Produit} from '../../models/produit';
+import {MessageService} from 'primeng';
 
 @Component({
   selector: 'app-transfert',
   templateUrl: './transfert.component.html',
-  styleUrls: ['./transfert.component.css']
+  styleUrls: ['./transfert.component.css'],
+  providers: [MessageService]
 })
 export class TransfertComponent implements AfterViewInit {
   Res : any = " ";
@@ -29,9 +29,10 @@ export class TransfertComponent implements AfterViewInit {
   TransfertForm: FormGroup;
   dateValue: Date;
    idBou:any;
+   idAlert: any ;
    TableRes:any[] ;
    BPTable: any[] = [];
-  constructor(private fb:FormBuilder,private DataTransfer: DataTransferService,private ProdService: ProduitService, private TransfertService: TransfertService, private PersonneService: InscriptionService) {
+  constructor(private messageService: MessageService,private fb:FormBuilder,private DataTransfer: DataTransferService,private ProdService: ProduitService, private TransfertService: TransfertService, private PersonneService: InscriptionService) {
   }
 
 
@@ -58,8 +59,6 @@ export class TransfertComponent implements AfterViewInit {
 
   }
   //cette fonction est utilisée pour remplir le tableau dans la page transfertHTML
-
-
   RecuperationTransfert() {
     this.TransfertService.recupererTransfert().subscribe(TransfertData => {
       this.TransfertTab = TransfertData;
@@ -67,16 +66,18 @@ export class TransfertComponent implements AfterViewInit {
   }
   GetDataFromDataTransferService(){
     this.DataTransfer.CurrentAlert.subscribe(message => {
-      console.log(message);
       this.Alert = message ;
       console.log(Object.keys(this.Alert).length);
       if(Object.keys(this.Alert).length === 0){
         console.log("Hello Alert is empty");
       }else {
+        console.log(this.Alert);
+        (document.getElementById("RefTransfert")as HTMLOutputElement).value = "REF" +this.getRandomTransferRefernce(100,1000);
         (document.getElementById("BoutiqueDestinataire") as HTMLOutputElement).value =this.Alert.nomBoutique;
         this.idBou = this.Alert.idBou;
-        this.ExtractionLocation(this.Alert.localisation);
+        this.idAlert = this.Alert.idAlert ;
 
+        this.ExtractionLocation(this.Alert.localisation);
      }
     });
   }
@@ -89,37 +90,42 @@ export class TransfertComponent implements AfterViewInit {
     let Ch2 = "";
     return [Ch1 = Res.substr(0,Res.indexOf(",")),Ch2 = Res.substr(Res.indexOf(",")+1)];
   }
-
   ExtractionLocation(L:string) {
     let Pos = this.ExtractionAltitude(L);
      this.ProdService.getProdByMLT(this.Alert.libelle,this.Alert.marque,this.Alert.type).subscribe(Prod =>{
        console.log(Prod);
        let loop2 = async() =>{
          this.TableRes = [];
+         this.TableRes.length = 0 ;
+         this.BPTable.length = 0 ;
          for (let i = 0; i < Prod[0].boutiqueproduitsByReferenceProduit.length; i++) {
-           console.log(Prod[0].boutiqueproduitsByReferenceProduit[i]);
+          // console.log(Prod[0].boutiqueproduitsByReferenceProduit[i]);
            this.ProdService.getBoutiqueById(Prod[0].boutiqueproduitsByReferenceProduit[i].idBou).subscribe(Result => {
              this.BPTable.push(Result);
            });
          }
          await new Promise(resolve => {setTimeout(resolve,500)});
-         for(let i = 0; i<this.BPTable.length; i++){
-           console.log("Localisation de BPTABLE " +this.BPTable[i].localisation);
-           let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
-           this.Res = this.getCoordinates(Pos,Pos2);
-          await  new Promise( resolve => setTimeout(resolve,900));
-           this.TableRes.push(this.Res);
+         if(this.BPTable.length == 0){
+           this.messageService.add({key:"SS",severity:'warn',summary:'Manque de Produit',detail:'Ce Produit est introuvable dans nos Boutiques '})
+         }else {
+           for (let i = 0; i < this.BPTable.length; i++) {
+             let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
+             this.Res = this.getCoordinates(Pos, Pos2);
+             await new Promise(resolve => setTimeout(resolve, 900));
+             this.TableRes.push(this.Res);
+           }
          }
+         console.log("============= BPTABLE");
+         console.log(this.BPTable);
       }
       let loop =async ()=>{
        await new Promise((resolve,reject)=>{
          resolve(loop2());
        }).then((value => {
          value = this.TableRes;
-         console.log(value);
-          for (let i=0;i<this.BPTable.length;i++){
-            console.log(this.TableRes[i]+ " "+this.BPTable[i].nomBoutique);
-          }
+         for(let i = 0 ; i<this.BPTable.length;i++){
+           console.log(this.TableRes[i] +" " +this.BPTable[i].nomBoutique);
+         }
        }));
       }
       loop();
@@ -154,36 +160,59 @@ export class TransfertComponent implements AfterViewInit {
       '    unit: \'k\'\n' +
       '  }\n' +
       '}';
-
-
     this.TransfertService.Location(tab).subscribe(data => {
-      console.log("i've reached the api :D");
       this.Res = data['route']['distance'];
   });
     return this.Res ;
   }
-  AddTransfert(calendarDate:any){
+  AddTransfert(){
     let T : Transfert =  new Transfert();
     let TB: Transfertboutique = new Transfertboutique();
-    T.cin_c= this.TransfertForm.get('DropD').value;
-    TB.id_bou_destinataire=this.idBou;
-    TB.id_bou_emetteur=(document.getElementById("BoutiqueEmetteur")as HTMLInputElement).value;
-    TB.ref_tran=(document.getElementById("RefTransfert")as HTMLInputElement).value;
-    T.reference_transfert=(document.getElementById("RefTransfert")as HTMLInputElement).value;
-    T.statut=false;
-    T.date_transfert= calendarDate;
+    T.cinC= this.TransfertForm.get('DropD').value;
+    TB.idBouDestinataire=this.idBou;
+    TB.idBouEmetteur=2;
+    TB.refTran=(document.getElementById("RefTransfert")as HTMLInputElement).value;
+    T.referenceTransfert=(document.getElementById("RefTransfert")as HTMLInputElement).value;
+    T.statut=0;
+    let days:any= this.dateValue.getDay();
+    let month:any=this.dateValue.getMonth();
+    let year:any=this.dateValue.getFullYear();
+    T.dateTransfert= year+"-"+month+"-"+days ;
+    console.log(T);
+    console.log(TB);
+    let Operation = async ()=> {
 
- /*  let Operation = async()=>{
-      this.TransfertService.SaveTransfert(T).toPromise().then(function(){
-        this.TransfertService.SaveTransfertBoutique(TB);
+      this.TransfertService.SaveTransfert(T).subscribe(response => {
+        if (response) {
+          this.messageService.add({key: "SS", severity: 'success', summary: 'Demande de transfert', detail: 'Le transfert est En cours'});
+        } else {
+          this.messageService.add({key: "SS", severity: 'danger', summary: 'Demande de transfert', detail: 'Le transfert est echoué'});
+
+        }
+      }, error => {
+        this.messageService.add({key: "SS", severity: 'warn', summary: 'Demande de transfert', detail: 'Un erreur est survenue' + error});
+
       });
-      //await new Promise(resolve => setTimeout(resolve,2000)).then();
-      //this.TransfertService.SaveTransfertBoutique(TB);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      this.TransfertService.SaveTransfertBoutique(TB).subscribe(response =>{
+        if(response){
+          this.messageService.add({key:"SS",severity:'success',summary:'Détails',detail:'tous les operations sont terminés'});
+        }else {
+          this.messageService.add({key:"SS",severity:'info',summary:'Détails',detail:'Insertion dans la table boutiqueProduit a echouée'});
+
+        }
+      },error => {
+        this.messageService.add({key:"SS",severity:'danger',summary:'Détails',detail:'Un erreur est survenue dans la table BoutiqueProduit'+ error});
+
+      });
     }
-    Operation();*/
-   console.log(T);
-   console.log(TB);
-  }
+     Operation();
+       }
+
+
+
+
   ngOnInit(): void {
     this.LoadCoursiers();
     this.RecuperationTransfert();
@@ -194,7 +223,6 @@ export class TransfertComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     this.GetDataFromDataTransferService();
-
   }
 }
 

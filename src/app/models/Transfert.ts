@@ -1,6 +1,6 @@
 export class Transfert {
-reference_transfert?;
-date_transfert?;
+referenceTransfert?;
+dateTransfert?;
 statut?;
-cin_c?;
+cinC?;
 }

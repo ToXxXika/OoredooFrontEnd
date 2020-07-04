@@ -5,5 +5,6 @@ export class TestClass {
   libelle?;
   localisation?;
   idBou?;
+  idAlert?;
 
 }

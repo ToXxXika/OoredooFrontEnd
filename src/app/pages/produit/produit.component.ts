@@ -72,7 +72,6 @@ export class ProduitComponent implements OnInit {
             this.Produits = Pr ;
             console.log(this.Produits)
           });
-
   }
 
   showDialogToAdd() {
@@ -83,6 +82,7 @@ export class ProduitComponent implements OnInit {
     const InputMarque = this.userform.get('Marque').value ;
     const InputType = this.userform.get('Type').value;
     const InputLibelle = this.userform.get('Libelle').value;
+    //switch with real values
     this.T.idBoutique=2;
     this.T.marque=InputMarque;
     this.T.type=InputType;
@@ -95,7 +95,7 @@ export class ProduitComponent implements OnInit {
       }else {
         this.messageService.add({key: 'SS', severity: 'warn', summary: 'Oops!', detail:'Alert non Ajouté'});
       }
-    },error =>  this.messageService.add({key: 'SS', severity: 'warn', summary: ':D', detail:'Erreur est survenue'+ error}));
+    },error =>  this.messageService.add({key: 'SS', severity: 'danger', summary: ':D', detail:'Erreur est survenue'+ error}));
 
     this.displayDialog = false ;
   }
