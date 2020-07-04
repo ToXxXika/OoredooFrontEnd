@@ -4,5 +4,5 @@ export class Produit {
   marque?;
   prix?;
   type?;
-
+  boutiqueproduitsByReferenceProduit?;
 }

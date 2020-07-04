@@ -16,6 +16,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {MenuModule} from "primeng/menu";
 import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layout.component';
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -36,7 +37,9 @@ import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layo
     AdminLayoutComponent,
     AuthLayoutComponent,
     TestToastComponent,
-    BoutiqueLayoutComponent
+    BoutiqueLayoutComponent,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]

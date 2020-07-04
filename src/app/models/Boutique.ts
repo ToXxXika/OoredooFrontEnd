@@ -3,5 +3,6 @@ export class Boutique {
  localisation?;
  nomBoutique?;
  numTelBoutique?;
+ boutiqueproduitsByIdBoutique?;
 
 }

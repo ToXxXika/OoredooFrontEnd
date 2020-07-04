@@ -12,7 +12,7 @@ import {MenuItem} from 'primeng/api';
 })
 
 export class RegisterComponent implements OnInit {
-   P:Personne = new Personne();
+   P:Personne = new Personne() ;
   Utilisateur: string;
   CIN:string ;
   Prenom:string ;
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
     const MDP = (document.getElementById('Motdepasse')as HTMLInputElement).value ;
     const mail = (document.getElementById('mail') as HTMLInputElement).value;
     const username = (document.getElementById('Utilisateur')as HTMLInputElement).value ;
-    this.P.username= username ;
+    this.P.username = username ;
     this.P.cin = X ;
     this.P.motdepasse = MDP ;
     this.P.role = "Admin" ;
@@ -53,6 +53,7 @@ export class RegisterComponent implements OnInit {
       this.messageService.add({key: 'SS', severity: 'success', summary: ':D', detail:'Utilisateur Ajouté'});
      console.log("EEEE");
       this.ClearData();
+    },error => {      this.messageService.add({key: 'SS', severity: 'danger', summary: error, detail:'utilisateur non ajouté. Erreur'});
     });
   }
   ModifierPersonne(){}

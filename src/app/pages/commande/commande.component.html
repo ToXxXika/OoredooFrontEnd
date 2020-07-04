@@ -1,0 +1,51 @@
+<p-panel>
+  <p-header>
+    <div class="ui-helper-clearfix">
+      <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Formulaire d'ajout une commande </span>
+      <p-splitButton [style]="{'float':'right'}" label="options" icon="pi pi-check" (onClick)="save()" [model]="items"></p-splitButton>
+    </div>
+  </p-header>
+
+ <form formGroupName="CommandeForm" class="mt-100">
+   <div class=" ui-fluid ">
+  <span class="ui-float-label" >
+    <input id="cininput" type="text" size="30" pInputText>
+    <label for="cininput">Cin Client</label>
+</span>
+     <br>
+     <span class="ui-float-label" >
+    <input id="NomClient" type="text" size="30" pInputText>
+    <label for="NomClient">Nom Client</label>
+</span>
+     <br>
+     <span class="ui-float-label" >
+    <input id="PrenomClient" type="text" size="30" pInputText>
+    <label for="PrenomClient">Prenom Client</label>
+</span>
+     <br>
+     <span class="ui-float-label">
+       <p-dropdown id="MD" [options]="MarqueDropdown"   ></p-dropdown>
+    <label for="MD">Marque Produit</label>
+</span>
+     <br>
+     <span class="ui-float-label">
+       <p-dropdown id="TPD" [options]="TypeProdDropdown" ></p-dropdown>
+    <label for="TPD">Type Produit</label>
+</span>
+     <br>
+     <span class="ui-float-label">
+       <p-dropdown id="LPD"  [options]="LibelleProdDropdown" ></p-dropdown>
+    <label for="LPD">Libelle Produit</label>
+</span>
+     <br>
+     <!-- change with NbrDisponible de produits dans ce boutique -->
+     <span class="ui-float-label">
+     <p-inputNumber    mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
+       <label for="QteP"></label>
+       </span>
+   </div>
+ </form>
+  <p-footer>
+    <button pButton type="button" icon="pi pi-plus" label="Confirmer" class="ui-button-info" style="margin-right: .25em"></button>
+  </p-footer>
+</p-panel>

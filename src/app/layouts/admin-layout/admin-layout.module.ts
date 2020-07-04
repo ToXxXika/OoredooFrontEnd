@@ -35,7 +35,8 @@ import {DropdownModule} from 'primeng/dropdown';
     MenuModule,
     InputTextModule,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    ReactiveFormsModule
 
 
   ],

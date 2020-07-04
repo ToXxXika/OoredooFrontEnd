@@ -3,4 +3,6 @@ export class Alert {
   idBoutique?;
   marque?;
   type?;
+  libelle?;
+  boutiqueByIdBoutique?;
 }

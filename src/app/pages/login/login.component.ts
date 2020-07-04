@@ -3,6 +3,7 @@ import {InscriptionService} from "../../Services/inscription.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
+import {Personne} from '../../models/personne';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,7 @@ import {MessageService} from "primeng/api";
 export class LoginComponent implements OnInit, OnDestroy {
   private CookieCinValue: string ;
   private CookiePasswordValue: string ; // need to fix Cookies Configuration
-
+  static P:Personne;
   constructor(private inscriptionService: InscriptionService, private router: Router,private cookieService: CookieService,private messageService: MessageService) {}
  public LoadLocalstorageKeys(KeyName: string):string{
      switch (KeyName) {
@@ -61,30 +62,32 @@ export class LoginComponent implements OnInit, OnDestroy {
       } else {
         //localStorage for All data about that specific user so we can display his/her Profile
         this.inscriptionService.GetUserRole(username).subscribe(data => {
-          console.log(data);
-          console.log(data["role"]);
           namesurname= data["nom"]+" "+data["prenom"];
-          console.log(namesurname);
           localStorage.setItem(this.LoadLocalstorageKeys('KeyUser'),namesurname);
           switch (data["role"]) {
             case 'Admin' : {
-              console.log("going to Dashboard");
-              this.router.navigateByUrl('/dashboard');
+             // LoginComponent.P = new Personne(data,true);
+              // console.log(LoginComponent.P);
+              //this.router.navigateByUrl('/dashboard');
               break;
             }
             case 'Coursier': {
+             // LoginComponent.P = new Personne(data,true);
               //a Faire InterFace d'un Coursier
-              this.router.navigateByUrl('/Dashboard');
+            //  this.router.navigateByUrl('/Coursier');
               break;
             }
             case 'AgentCommercial': {
+             // LoginComponent.P = new Personne(data, true);
+             // console.log(data);
+              //  console.log(LoginComponent.P)
               //a faire interface d'un Agent Commercial
-              this.router.navigateByUrl('/boutique');
-              break;
+             // this.router.navigateByUrl('/boutique');
 
+              break;
             }
             default: {
-              alert("ERROR IN TABLE");
+              alert("ERROR IN TABLE USER IS NOT FOUND ");
               break;
             }
           }

@@ -18,7 +18,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-app"></i></span>
                 </div>
-                <input class="form-control" placeholder="Nom utilisateur" type="text" id="Utilisateur" [(ngModel)]="this.Utilisateur" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="Nom utilisateur" type="text" id="Utilisateur" >
               </div>
             </div>
             <!-- ////////// -->
@@ -27,7 +27,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                 </div>
-                <input class="form-control" placeholder="CIN" type="text" id="CIN" [(ngModel)]="this.CIN" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="CIN" type="text" id="CIN"  >
               </div>
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                 </div>
-                <input class="form-control" placeholder="Nom" type="text" id="Nom" [(ngModel)]="this.Nom" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="Nom" type="text" id="Nom" >
               </div>
             </div>
             <div class="form-group">
@@ -43,7 +43,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                 </div>
-                <input class="form-control" placeholder="Prenom" type="text" id="Prenom" [(ngModel)]="this.Prenom" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="Prenom" type="text" id="Prenom"  >
               </div>
             </div>
             <div class="form-group">
@@ -51,7 +51,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                 </div>
-                <input class="form-control" placeholder="Email" type="email" id="mail" [(ngModel)]="this.m" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="Email" type="email" id="mail">
               </div>
             </div>
             <div class="form-group">
@@ -59,11 +59,11 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                 </div>
-                <input class="form-control" placeholder="Mot de passe" type="password" id="Motdepasse" [(ngModel)]="this.MotPasse" [ngModelOptions]="{standalone: true}">
+                <input class="form-control" placeholder="Mot de passe" type="password" id="Motdepasse" >
               </div>
             </div>
             <div class="text-center">
-              <button type="button" class="btn btn-primary mt-4" (click)="AjoutPersonne()">Create account</button>
+              <button type="button" class="btn btn-primary mt-4" (click)="AjoutPersonne()">Créer un Compte</button>
                   <p-toast key="SS" position="top-right"></p-toast>
             </div>
           </form>

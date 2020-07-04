@@ -1,8 +1,12 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import {Component, OnInit, ElementRef, Output, EventEmitter} from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import {ProduitService} from '../../Services/produit.service';
+import {DataTransferService} from '../../Services/data-transfer.service';
+import {Alert} from '../../models/alert';
+import {TestClass} from '../../models/TestClass';
+
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +19,10 @@ export class NavbarComponent implements OnInit {
   public location: Location;
   public AlertsTab : any[]=[];
 
-  constructor(location: Location,  private element: ElementRef, private router: Router,private prodservice:ProduitService) {
+  constructor(private DataTransfer : DataTransferService,location: Location,  private element: ElementRef, private router: Router,private prodservice:ProduitService) {
     this.location = location;
   }
-
+   @Output() Obj = new EventEmitter<TestClass>();
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
     this.getAlerts();
@@ -37,11 +41,10 @@ export class NavbarComponent implements OnInit {
     }
   }
   //this function is used to get Value from Specific Notification
-  goToTransfert(x:any){
-    sessionStorage.setItem("Localisation",x['boutiqueByIdBoutique']['localisation']);
-    sessionStorage.setItem("NomBoutique",x['boutiqueByIdBoutique']['nomBoutique']);
-    sessionStorage.setItem("MarqueProduit",x.marque)
-    sessionStorage.setItem("TypeProduit",x.type)
+  goToTransfert(d:any){
+    this.Obj.emit(d);
+     this.DataTransfer.GetObjectAlert(d);
+
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());
@@ -57,10 +60,22 @@ export class NavbarComponent implements OnInit {
     return 'Dashboard';
   }
   getAlerts(){
-       this.prodservice.recupererAlert().subscribe( AlertData =>{
-         console.log('Hello')
-         console.log(AlertData[0]['boutiqueByIdBoutique']['nomBoutique']);
-          this.AlertsTab=AlertData ;
+       this.prodservice.recupererBoutique().subscribe( AlertData =>{
+
+          for(let A of AlertData){
+            if(Object.keys(A["alertsByIdBoutique"]).length !==0){
+             let L:TestClass = new TestClass();
+             for (let i=0;i<A['alertsByIdBoutique'].length;i++) {
+               L.idBou = A.idBoutique ;
+               L.nomBoutique = A.nomBoutique;
+               L.localisation = A.localisation ;
+               L.libelle = A['alertsByIdBoutique'][i]['libelle'];
+               L.marque = A['alertsByIdBoutique'][i]['marque'];
+               L.type = A['alertsByIdBoutique'][i]['type'];
+             }
+              this.AlertsTab.push(L);
+            }
+          }
        })
   }
 

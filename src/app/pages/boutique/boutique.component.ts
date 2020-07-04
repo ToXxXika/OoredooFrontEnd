@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Validators,FormControl,FormGroup,FormBuilder} from '@angular/forms';
-import {SelectItem} from 'primeng/api';
 import {MessageService} from 'primeng/api';
 import {ProduitService} from '../../Services/produit.service';
 import {Alert} from '../../models/alert';
@@ -66,13 +65,11 @@ export class BoutiqueComponent implements OnInit {
     const InputType = this.userform.get('Type').value;
     const InputBoutique = this.userform.get('Boutique').value;
     console.log(InputBoutique);
-    console.log(InputType);
       this.T.idBoutique=InputBoutique;
       this.T.marque=InputMarque;
       this.T.type=InputType;
       this.T.idAlert=2;
-      console.log(this.T)
-    this.ProdService.saveAlert(this.T);
+    this.ProdService.saveAlert(this.T)
   }
   onSubmit(value: string) {
     this.AddAlert();

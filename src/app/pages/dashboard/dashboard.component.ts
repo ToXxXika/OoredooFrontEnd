@@ -21,25 +21,32 @@ import {MessageService} from "primeng/api";
 export class DashboardComponent implements OnInit {
 
   public datasets: any;
+  public proddatasets : any
+  public Widthproddatasets : any
+  public heightproddatasets : any
   public data: any;
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
   private UserNumbers : number ;
   private ProdNumbers : number ;
+  private AlertNumbers: number ;
   constructor(private ProduitService : ProduitService,private InscriptionService: InscriptionService,private  Msg: MessageService) { }
 
 
 
   ngOnInit() {
 
-    //Need to put them in a block
     this.InscriptionService.Utilisateurs().subscribe(UserData =>{
       this.UserNumbers = UserData.length ;
     });
-    /*this.ProduitService.recupererProduit().subscribe(ProdData =>{
-      this.ProdNumbers = ProdData.length
-    });*/
+    this.ProduitService.recupererProduit().subscribe(ProdData =>{
+      this.ProdNumbers = ProdData.length;
+
+    });
+    this.ProduitService.recupererAlert().subscribe( AlertData => {
+      this.AlertNumbers = AlertData.length;
+    })
     //END OF BLOCK
     this.datasets = [
       [0, 20, 10, 30, 15, 40, 20, 60, 60],

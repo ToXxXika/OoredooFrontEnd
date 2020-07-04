@@ -7,5 +7,6 @@ export class Personne {
   motdepasse?;
   role?;
   numTel?;
+  // Fix
 
 }

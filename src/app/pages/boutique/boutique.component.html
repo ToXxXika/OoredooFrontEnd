@@ -1,6 +1,8 @@
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
+
 <div class="container container-fluid">
 <form [formGroup]="userform" (ngSubmit)="onSubmit(userform.value)">
+  <div class="ui-fluid">
   <p-panel header="Formulaire de Demande">
     <div class="p-fluid forms-grid" style="margin: 1em 0">
       <div>
@@ -23,5 +25,6 @@
       </div>
     </div>
   </p-panel>
+  </div>
 </form>
 </div>

@@ -1,0 +1,60 @@
+<p-toast key="SS" position="top-right"></p-toast>
+<p-table [value]="Produits">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ReferenceProduit</th>
+      <th>Marque</th>
+      <th>Libelle</th>
+      <th>Type</th>
+      <th>Prix</th>
+      <th>Stock</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-P>
+    <tr>
+      <td>{{P['0']}}</td>
+      <td>{{P['1']}}</td>
+      <td>{{P['2']}}</td>
+      <td>{{P['3']}}</td>
+      <td>{{P['4']}}</td>
+      <td>{{P['5']}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+    <div style="text-align:left">
+      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Demander un Produit"></button>
+    </div>
+  </ng-template>
+</p-table>
+<p-dialog header="Demande de Transfert d'un Produit" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '700px'}">
+  <div class="p-grid ui-fluid" >
+   <form [formGroup]="userform">
+    <div class="p-col-4">
+      <label for="M">Marque</label>
+    </div>
+    <div class="p-col-8">
+      <p-dropdown [options]="MarqueDropdown" id="M" formControlName="Marque" ></p-dropdown>
+
+    </div>
+    <div class="p-col-4">
+      <label for="brand">Type</label>
+    </div>
+    <div class="p-col-8">
+      <p-dropdown [options]="TypeProdDropdown" id="brand" formControlName="Type"></p-dropdown>
+
+    </div>
+    <div class="p-col-4">
+      <label for="Libelle">Libelle</label>
+    </div>
+    <div class="p-col-8">
+      <p-dropdown [options]="LibelleProdDropdown" id="Libelle" formControlName="Libelle"></p-dropdown>
+
+    </div>
+   </form>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="pi pi-check" (click)="Confirmer()" label="Confirmer"></button>
+    </div>
+  </p-footer>
+</p-dialog>
