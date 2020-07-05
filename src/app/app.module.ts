@@ -15,6 +15,7 @@ import { TestToastComponent } from './test-toast/test-toast.component';
 import {BrowserModule} from "@angular/platform-browser";
 import {MenuModule} from "primeng/menu";
 import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layout.component';
+import { DetailcommandeComponent } from './pages/detailcommande/detailcommande.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layo
     AuthLayoutComponent,
     TestToastComponent,
     BoutiqueLayoutComponent,
+    DetailcommandeComponent,
 
 
   ],

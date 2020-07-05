@@ -3,17 +3,17 @@ import {CommandeService} from '../../Services/commande.service';
 import {Commande} from '../../models/commande';
 import {DetailsCommande} from '../../models/DetailsCommande';
 import {ProduitService} from '../../Services/produit.service';
-import {MenuItem} from 'primeng';
+import {MenuItem, MessageService} from 'primeng';
 import {Router} from '@angular/router';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-commande',
   templateUrl: './commande.component.html',
-  styleUrls: ['./commande.component.css']
+  styleUrls: ['./commande.component.css'],
+  providers:[MessageService]
 })
 export class CommandeComponent implements OnInit {
-  BoutiqueProdTable: any[] = [];
   items: MenuItem[];
   TypeProdDropdown: any[] = [];
   MarqueDropdown: any[] = [];
@@ -22,12 +22,15 @@ export class CommandeComponent implements OnInit {
   LibelleProdDropdown: any[]=[];
   LibelleFiltre: string[]= [];
   //====================================
+  idcommande:string ;
   cininput:string ;
   NomClient: string ;
   PrenomClient: string ;
-  MD:string ;
+  Marque:any ; Type:any;Libelle:any;Date: any ;
+  CommandeForm: FormGroup;
+  dateValue: any;
 
-  constructor(private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
+  constructor(private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
   }
   loadDropdowns(){
     //get boutique from Agentcommercial Connecté
@@ -45,9 +48,6 @@ export class CommandeComponent implements OnInit {
           this.LibelleFiltre.push(data[i]["2"]);
         }
       }
-      console.log(this.MarqueFiltre)
-      console.log(this.TypeFiltre)
-      console.log(this.LibelleFiltre);
       for(let i=0;i<this.TypeFiltre.length;i++){
         this.ProdServ.getDescriptionByType(this.TypeFiltre[i]).subscribe( Desc =>{
           console.log(Desc.description);
@@ -66,32 +66,117 @@ export class CommandeComponent implements OnInit {
   ngOnInit(): void {
     this.loadDropdowns();
     this.items = [
-      {label: 'Chercher un produit', icon: 'pi pi-fw pi-refresh', command: () => {
+      {label: 'Chercher un produit', icon: 'pi pi-table', command: () => {
         this.router.navigateByUrl("/produits");
         }},
-      {label: 'Vider les Champs', icon: 'pi pi-fw pi-times', command: () => {
+      {label: 'Vider les Champs', icon: 'pi pi-fw pi-refresh', command: () => {
         this.cleardata();
         }},
 
     ];
+    this.CommandeForm = this.fb.group({
+    'Marque': new FormControl(''),
+      'Type': new FormControl(''),
+      'Libelle': new FormControl('')
+    });
+    (document.getElementById("idcommande")as HTMLOutputElement).value = "IDC" + this.getRandomCommandID(10000,100000);
+  }
+  getRandomCommandID(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
   }
   cleardata(){
     this.cininput = "";
     this.NomClient = "";
     this.PrenomClient="";
-    this.MD= "";
-
+    this.idcommande="";
   }
 
-  //passage de date par fonction
   AddCommande() {
     let C: Commande = new Commande();
     let DC: DetailsCommande = new DetailsCommande();
-    let Marque = (document.getElementById("") as HTMLInputElement).value;
-    let Type = (document.getElementById("") as HTMLInputElement).value;
-    let Libelle = (document.getElementById("") as HTMLInputElement).value;
-    C.idCommande = (document.getElementById("") as HTMLInputElement).value;
- //update Quantity when Passing a new Comand
+    this.Marque = this.CommandeForm.get('Marque').value;
+    this.Type = this.CommandeForm.get('Type').value;
+    this.Libelle = this.CommandeForm.get('Libelle').value;
+    this.ProdServ.getProdByMLT(this.Libelle,this.Marque,this.Type).subscribe(P=>{
+      this.idcommande = (document.getElementById("idcommande")as HTMLInputElement).value;
+      this.cininput = (document.getElementById("cininput") as HTMLInputElement).value;
+      this.PrenomClient = (document.getElementById("PrenomClient")as HTMLInputElement).value;
+      this.NomClient =  (document.getElementById("NomClient")as HTMLInputElement).value;
+      let Qte = (document.getElementById("QteP")as HTMLInputElement).value ;
+      let days:any= this.dateValue.getDay();
+      let month:any=this.dateValue.getMonth();
+      let year:any=this.dateValue.getFullYear();
+      this.Date = year+"-"+month+"-"+days ;
+      let RefProd = P['referenceProduit'];
+      C.idCommande= this.idcommande;
+      C.dateCommande = this.Date;
+      DC.cinclient = this.cininput;
+      DC.idcom = this.idcommande;
+      DC.nomclient = this.NomClient;
+      DC.prenomclient = this.PrenomClient ;
+      DC.qtecom = Qte;
+      DC.reprod = RefProd;
+      let CommandSave = async () =>{
+        this.CommServ.SaveCommande(C).subscribe(response  =>{
+          if(response){
+             this.messageService.add({key:'SS',severity:'success',summary:'Insertion Du Commande',detail:'Ajout Commande est terminée'})
+          }else {
+            this.messageService.add({key:'SS',severity:'warn',summary:'Insertion Du Commande',detail:'Ajout Commande a echouée'})
+
+          }
+        },error => {
+          this.messageService.add({key:'SS',severity:'danger',summary:'Insertion Du Commande',detail:'un erreur est survenu'+ error})
+
+        });
+      }
+      let DetailCommandeSave = async () =>{
+         await new Promise(resolve => {
+           resolve(CommandSave());
+         }).then(value => {
+           this.CommServ.SaveDetailCommande(DC).subscribe(response =>{
+             if (response){
+               this.messageService.add({key:'SS',severity:'success',summary:'Insertion Details Commande ',detail:'Ajout Details Commande est terminée '});
+                this.ProdServ.UpdateBoutiqueProduitStock(Qte,5,RefProd).subscribe(answer =>{
+                  if (answer) {
+                    this.messageService.add({
+                      key: 'SS',
+                      severity: 'success',
+                      summary: 'Mise a jour',
+                      detail: 'Stock de Produit est Modifié'
+                    });
+                  }else {
+                    this.messageService.add({
+                      key:'SS',
+                      severity:'warn',
+                      summary: 'Mise a jour',
+                      detail : 'Erreur dans la mise a jour de stock de produit'
+                    })
+                  }
+                },error => {
+                  this.messageService.add({
+                    key:'SS',
+                    severity:'danger',
+                    summary: 'Erreur Mise a jour ',
+                    detail : 'Erreur est survenue '+error
+                  })
+                })
+
+             }else {
+               this.messageService.add({key:'SS',severity:'warn',summary:'Insertion Details Commande',detail:'Ajout Detail commande a echouée'})
+             }
+           },error => {
+             this.messageService.add({key:'SS',severity:'danger',summary:'Insertion Details Commande',detail:'un erreur est survenu'+error})
+
+           })
+         })
+      }
+         DetailCommandeSave();
+
+    })
+
+
 
   }
 }

@@ -22,6 +22,16 @@ export class ProduitService {
   private UrlgetProdByMLT = 'http://localhost:8080/Produit/FindByMLT';
   private UrlgetBoutiqueById= 'http://localhost:8080/Boutique/FindBoutiqueById';
   private UrlGetDescriptionbyType='http://localhost:8080/Produit/FindDesc';
+  private UrlUpdateBoutiqueProduit = 'http://localhost:8080/BoutiqueProduit/updateBoutiqueProduit';
+
+  public UpdateBoutiqueProduitStock(Qte:any,idbou:any,refprod:any){
+    let opts : {params : HttpParams};
+    opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod'+refprod})};
+    return this.http.post(this.UrlUpdateBoutiqueProduit,opts)
+  }
+
+
+
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
   }

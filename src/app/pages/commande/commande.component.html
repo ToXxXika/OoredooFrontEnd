@@ -1,3 +1,4 @@
+<
 <p-panel>
   <p-header>
     <div class="ui-helper-clearfix">
@@ -6,8 +7,13 @@
     </div>
   </p-header>
 
- <form formGroupName="CommandeForm" class="mt-100">
+ <form [formGroup]="CommandeForm" class="mt-100">
    <div class=" ui-fluid ">
+      <span class="ui-float-label" >
+    <input id="idcommande" type="text" size="30" pInputText>
+    <label for="idcommande">Id Commande</label>
+</span>
+     <br>
   <span class="ui-float-label" >
     <input id="cininput" type="text" size="30" pInputText>
     <label for="cininput">Cin Client</label>
@@ -24,17 +30,17 @@
 </span>
      <br>
      <span class="ui-float-label">
-       <p-dropdown id="MD" [options]="MarqueDropdown"   ></p-dropdown>
+       <p-dropdown id="MD" [options]="MarqueDropdown" formControlName="Marque"></p-dropdown>
     <label for="MD">Marque Produit</label>
 </span>
      <br>
      <span class="ui-float-label">
-       <p-dropdown id="TPD" [options]="TypeProdDropdown" ></p-dropdown>
+       <p-dropdown id="TPD" [options]="TypeProdDropdown" formControlName="Type" ></p-dropdown>
     <label for="TPD">Type Produit</label>
 </span>
      <br>
      <span class="ui-float-label">
-       <p-dropdown id="LPD"  [options]="LibelleProdDropdown" ></p-dropdown>
+       <p-dropdown id="LPD"  [options]="LibelleProdDropdown" formControlName="Libelle"></p-dropdown>
     <label for="LPD">Libelle Produit</label>
 </span>
      <br>
@@ -43,9 +49,14 @@
      <p-inputNumber    mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
        <label for="QteP"></label>
        </span>
+     <br>
+     <span class="ui-float-label">
+            <p-calendar id="T" [(ngModel)]="dateValue" showButtonBar="true" size="100"  dateFormat="dd/mm/yy" #Mycalendar></p-calendar>
+             <label for="T">DateCommande</label>
+           </span>
    </div>
  </form>
   <p-footer>
-    <button pButton type="button" icon="pi pi-plus" label="Confirmer" class="ui-button-info" style="margin-right: .25em"></button>
+    <button pButton type="button" (click)="AddCommande()" label="Confirmer" class="ui-button-info" style="margin-right: .25em"></button>
   </p-footer>
 </p-panel>

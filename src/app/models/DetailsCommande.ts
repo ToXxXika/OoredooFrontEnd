@@ -1,5 +1,8 @@
 export class DetailsCommande {
-  qteCommande?;
-  id_prod?;
-  id_commande?;
+  idcom?;
+  reprod?;
+  cinclient?;
+  nomclient?;
+  prenomclient?;
+  qtecom?;
 }
