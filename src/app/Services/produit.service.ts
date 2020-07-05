@@ -26,8 +26,8 @@ export class ProduitService {
 
   public UpdateBoutiqueProduitStock(Qte:any,idbou:any,refprod:any){
     let opts : {params : HttpParams};
-    opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod'+refprod})};
-    return this.http.post(this.UrlUpdateBoutiqueProduit,opts)
+    opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod='+refprod})};
+    return this.http.get(this.UrlUpdateBoutiqueProduit,opts)
   }
 
 

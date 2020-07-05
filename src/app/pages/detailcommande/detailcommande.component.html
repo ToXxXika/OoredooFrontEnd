@@ -1,38 +1,30 @@
 <!-- main app container -->
-<div class="card m-3">
-  <h5 class="card-header">Commande Details</h5>
+<div class="card m-3" id="Cadre">
+  <h5 class="card-header">Details de Commande</h5>
   <div class="card-body">
     <hr/>
-    <div *ngIf="commande">
+    <div>
       <div style="text-align: center;">
-        <label><b>Numéro Commande: </b></label> {{commande.id}}
-      </div>
-
-
-      <div style="text-align: center;">
-        <label><b>Numéro client: </b></label> {{commande.num_telf}}
+        <label><b>Id Commande: </b></label> {{Idcommande}}
       </div>
       <div style="text-align: center;">
-        <label><b>Adresse Boutique : </b></label> {{commande.adresse}}
+        <label><b>Nom client : </b></label> {{NomClient}}
       </div>
       <div style="text-align: center;">
-        <label><b>Nom client : </b></label> {{commande.nom}}
-      </div>
-      <div style="text-align: center;">
-        <label><b>Prénom client : </b></label> {{commande.prenom}}
+        <label><b>Prénom client : </b></label> {{PrenomClient}}
       </div>
 
       <div style="text-align: center;">
-        <label><b>Référence Produit: </b></label> {{commande.id_vo}}
+        <label><b>Référence Produit: </b></label> {{RefProd}}
       </div>
       <div style="text-align: center;">
-        <label><b>Prix (DT): </b></label> {{commande.price}}
+        <label><b>Prix (DT): </b></label>
       </div>
       <div style="text-align: center;">
-        <label><b>Quantité: </b></label> {{commande.quantite_produit}}
+        <label><b>Quantité: </b></label> {{Qte}}
       </div>
       <div style="text-align: center;">  <b><mat-label>Prix Totale : </mat-label></b>
-        {{commande.price * commande.quantite_produit}}  (DT)</div>
+        (DT)</div>
     </div>
 
 
@@ -41,7 +33,7 @@
       <br>
       <button  (click)="pdf()"  class="btn btn-primary" style="margin-right: 20px;">Imprimer PDF</button>
 
-      <button (click)="list()" class="btn btn-primary">Back to commande List</button><br>
+      <button (click)="list()" class="btn btn-primary">Retour a la liste de commandes</button><br>
     </div>
 
 

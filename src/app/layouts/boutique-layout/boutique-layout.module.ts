@@ -17,9 +17,10 @@ import {TableModule} from 'primeng/table';
 import {CommonModule} from '@angular/common';
 import {DataViewModule} from 'primeng/dataview';
 import {DialogModule} from 'primeng/dialog';
-import {CalendarModule, SplitButtonModule} from 'primeng';
+import { SplitButtonModule} from 'primeng';
 import {InputNumberModule} from 'primeng/inputnumber';
-
+import {CalendarModule} from 'primeng/calendar'
+import {DetailcommandeComponent} from '../../pages/detailcommande/detailcommande.component';
 
 
 @NgModule({
@@ -38,9 +39,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         FormsModule,
         DataViewModule,
         DialogModule,
-        CalendarModule,
         SplitButtonModule,
-        InputNumberModule
+        InputNumberModule,
+        CalendarModule
 
 
     ],
@@ -48,7 +49,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
     BoutiqueComponent,
     CoursierComponent,
     CommandeComponent,
-    ProduitComponent
+    ProduitComponent,
+    DetailcommandeComponent
   ]
 })
 export class BoutiqueLayoutModule {}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommandeService} from '../../Services/commande.service';
 import {Commande} from '../../models/commande';
 import {DetailsCommande} from '../../models/DetailsCommande';
@@ -6,6 +6,8 @@ import {ProduitService} from '../../Services/produit.service';
 import {MenuItem, MessageService} from 'primeng';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {DataTransferService} from '../../Services/data-transfer.service';
+import {TestClass} from '../../models/TestClass';
 
 @Component({
   selector: 'app-commande',
@@ -28,9 +30,11 @@ export class CommandeComponent implements OnInit {
   PrenomClient: string ;
   Marque:any ; Type:any;Libelle:any;Date: any ;
   CommandeForm: FormGroup;
-  dateValue: any;
+  dateValue: Date;
+  Quantite: number;
 
-  constructor(private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
+
+  constructor(private DataTransfer: DataTransferService,private Router: Router,private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
   }
   loadDropdowns(){
     //get boutique from Agentcommercial Connecté
@@ -62,6 +66,7 @@ export class CommandeComponent implements OnInit {
       }
     })
   }
+  @Output() Obj = new EventEmitter<DetailsCommande>();
 
   ngOnInit(): void {
     this.loadDropdowns();
@@ -77,7 +82,9 @@ export class CommandeComponent implements OnInit {
     this.CommandeForm = this.fb.group({
     'Marque': new FormControl(''),
       'Type': new FormControl(''),
-      'Libelle': new FormControl('')
+      'Libelle': new FormControl(''),
+      'DateT': new FormControl(''),
+      'Qte': new FormControl('')
     });
     (document.getElementById("idcommande")as HTMLOutputElement).value = "IDC" + this.getRandomCommandID(10000,100000);
   }
@@ -94,89 +101,118 @@ export class CommandeComponent implements OnInit {
   }
 
   AddCommande() {
+    console.log(this.dateValue);
     let C: Commande = new Commande();
     let DC: DetailsCommande = new DetailsCommande();
     this.Marque = this.CommandeForm.get('Marque').value;
     this.Type = this.CommandeForm.get('Type').value;
     this.Libelle = this.CommandeForm.get('Libelle').value;
-    this.ProdServ.getProdByMLT(this.Libelle,this.Marque,this.Type).subscribe(P=>{
-      this.idcommande = (document.getElementById("idcommande")as HTMLInputElement).value;
+    this.ProdServ.getProdByMLT(this.Libelle,this.Marque,this.Type).subscribe(P=> {
+      let RefProd:any = P[0]['referenceProduit'];
+      console.log(RefProd);
+      this.idcommande = (document.getElementById("idcommande") as HTMLInputElement).value;
       this.cininput = (document.getElementById("cininput") as HTMLInputElement).value;
-      this.PrenomClient = (document.getElementById("PrenomClient")as HTMLInputElement).value;
-      this.NomClient =  (document.getElementById("NomClient")as HTMLInputElement).value;
-      let Qte = (document.getElementById("QteP")as HTMLInputElement).value ;
-      let days:any= this.dateValue.getDay();
-      let month:any=this.dateValue.getMonth();
-      let year:any=this.dateValue.getFullYear();
-      this.Date = year+"-"+month+"-"+days ;
-      let RefProd = P['referenceProduit'];
-      C.idCommande= this.idcommande;
+      this.PrenomClient = (document.getElementById("PrenomClient") as HTMLInputElement).value;
+      this.NomClient = (document.getElementById("NomClient") as HTMLInputElement).value;
+      let Qte = this.Quantite;
+      console.log(Qte);
+      let days: any = this.dateValue.getDay();
+      let month: any = this.dateValue.getMonth();
+      let year: any = this.dateValue.getFullYear();
+      this.Date = year + "-" + month + "-" + days;
+      C.idCommande = this.idcommande;
       C.dateCommande = this.Date;
       DC.cinclient = this.cininput;
       DC.idcom = this.idcommande;
       DC.nomclient = this.NomClient;
-      DC.prenomclient = this.PrenomClient ;
+      DC.prenomclient = this.PrenomClient;
       DC.qtecom = Qte;
       DC.reprod = RefProd;
-      let CommandSave = async () =>{
-        this.CommServ.SaveCommande(C).subscribe(response  =>{
-          if(response){
-             this.messageService.add({key:'SS',severity:'success',summary:'Insertion Du Commande',detail:'Ajout Commande est terminée'})
-          }else {
-            this.messageService.add({key:'SS',severity:'warn',summary:'Insertion Du Commande',detail:'Ajout Commande a echouée'})
+      let CommandSave = async () => {
+        this.CommServ.SaveCommande(C).subscribe(response => {
+          if (response) {
+            this.messageService.add({
+              key: 'SS',
+              severity: 'success',
+              summary: 'Insertion Du Commande',
+              detail: 'Ajout Commande est terminée'
+            })
+          } else {
+            this.messageService.add({key: 'SS', severity: 'warn', summary: 'Insertion Du Commande', detail: 'Ajout Commande a echouée'})
 
           }
-        },error => {
-          this.messageService.add({key:'SS',severity:'danger',summary:'Insertion Du Commande',detail:'un erreur est survenu'+ error})
-
+        }, error => {
+          this.messageService.add({
+            key: 'SS',
+            severity: 'danger',
+            summary: 'Insertion Du Commande',
+            detail: 'un erreur est survenu' + error
+          })
         });
-      }
-      let DetailCommandeSave = async () =>{
-         await new Promise(resolve => {
-           resolve(CommandSave());
-         }).then(value => {
-           this.CommServ.SaveDetailCommande(DC).subscribe(response =>{
-             if (response){
-               this.messageService.add({key:'SS',severity:'success',summary:'Insertion Details Commande ',detail:'Ajout Details Commande est terminée '});
-                this.ProdServ.UpdateBoutiqueProduitStock(Qte,5,RefProd).subscribe(answer =>{
-                  if (answer) {
-                    this.messageService.add({
-                      key: 'SS',
-                      severity: 'success',
-                      summary: 'Mise a jour',
-                      detail: 'Stock de Produit est Modifié'
-                    });
-                  }else {
-                    this.messageService.add({
-                      key:'SS',
-                      severity:'warn',
-                      summary: 'Mise a jour',
-                      detail : 'Erreur dans la mise a jour de stock de produit'
-                    })
-                  }
-                },error => {
-                  this.messageService.add({
-                    key:'SS',
-                    severity:'danger',
-                    summary: 'Erreur Mise a jour ',
-                    detail : 'Erreur est survenue '+error
-                  })
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        //##############################################################################
+        this.CommServ.SaveDetailCommande(DC).subscribe(response => {
+          if (response) {
+            this.messageService.add({
+              key: 'SS',
+              severity: 'success',
+              summary: 'Insertion Details Commande ',
+              detail: 'Ajout Details Commande est terminée '
+            });
+            this.ProdServ.UpdateBoutiqueProduitStock(Qte, 5, RefProd).subscribe(answer => {
+              if (answer) {
+                this.messageService.add({
+                  key: 'SS',
+                  severity: 'success',
+                  summary: 'Mise a jour',
+                  detail: 'Stock de Produit est Modifié'
+                });
+                this.Obj.emit(DC);
+                this.DataTransfer.GetObjectCommande(DC);
+
+                this.router.navigateByUrl("/detailcommande")
+              } else {
+                this.messageService.add({
+                  key: 'SS',
+                  severity: 'warn',
+                  summary: 'Mise a jour',
+                  detail: 'Erreur dans la mise a jour de stock de produit'
                 })
+              }
+            }, error => {
+              this.messageService.add({
+                key: 'SS',
+                severity: 'danger',
+                summary: 'Erreur Mise a jour ',
+                detail: 'Erreur est survenue ' + error
+              })
+            })
+          } else {
+            this.messageService.add({
+              key: 'SS',
+              severity: 'warn',
+              summary: 'Insertion Details Commande',
+              detail: 'Ajout Detail commande a echouée'
+            })
+          }
+        }, error => {
+          this.messageService.add({
+            key: 'SS',
+            severity: 'danger',
+            summary: 'Insertion Details Commande',
+            detail: 'un erreur est survenu' + error
+          });
 
-             }else {
-               this.messageService.add({key:'SS',severity:'warn',summary:'Insertion Details Commande',detail:'Ajout Detail commande a echouée'})
-             }
-           },error => {
-             this.messageService.add({key:'SS',severity:'danger',summary:'Insertion Details Commande',detail:'un erreur est survenu'+error})
-
-           })
-         })
+        })
       }
-         DetailCommandeSave();
-
+      CommandSave();
     })
-
-
-
   }
 }
+
+
+
+
+
+
+

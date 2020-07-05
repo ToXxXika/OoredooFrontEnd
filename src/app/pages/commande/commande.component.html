@@ -1,4 +1,4 @@
-<
+<p-toast key="SS" position="bottom-right"></p-toast>
 <p-panel>
   <p-header>
     <div class="ui-helper-clearfix">
@@ -12,46 +12,46 @@
       <span class="ui-float-label" >
     <input id="idcommande" type="text" size="30" pInputText>
     <label for="idcommande">Id Commande</label>
-</span>
+   </span>
      <br>
   <span class="ui-float-label" >
     <input id="cininput" type="text" size="30" pInputText>
     <label for="cininput">Cin Client</label>
-</span>
+   </span>
      <br>
      <span class="ui-float-label" >
     <input id="NomClient" type="text" size="30" pInputText>
     <label for="NomClient">Nom Client</label>
-</span>
+     </span>
      <br>
      <span class="ui-float-label" >
     <input id="PrenomClient" type="text" size="30" pInputText>
     <label for="PrenomClient">Prenom Client</label>
-</span>
+     </span>
      <br>
      <span class="ui-float-label">
        <p-dropdown id="MD" [options]="MarqueDropdown" formControlName="Marque"></p-dropdown>
     <label for="MD">Marque Produit</label>
-</span>
+     </span>
      <br>
      <span class="ui-float-label">
        <p-dropdown id="TPD" [options]="TypeProdDropdown" formControlName="Type" ></p-dropdown>
     <label for="TPD">Type Produit</label>
-</span>
+       </span>
      <br>
      <span class="ui-float-label">
        <p-dropdown id="LPD"  [options]="LibelleProdDropdown" formControlName="Libelle"></p-dropdown>
     <label for="LPD">Libelle Produit</label>
-</span>
+      </span>
      <br>
      <!-- change with NbrDisponible de produits dans ce boutique -->
      <span class="ui-float-label">
-     <p-inputNumber    mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
+     <p-inputNumber   [(ngModel)]="Quantite" formControlName="Qte" mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
        <label for="QteP"></label>
        </span>
      <br>
      <span class="ui-float-label">
-            <p-calendar id="T" [(ngModel)]="dateValue" showButtonBar="true" size="100"  dateFormat="dd/mm/yy" #Mycalendar></p-calendar>
+            <p-calendar id="T" [(ngModel)]="dateValue" formControlName="DateT" showButtonBar="true" size="100"  dateFormat="dd/mm/yy" ></p-calendar>
              <label for="T">DateCommande</label>
            </span>
    </div>
