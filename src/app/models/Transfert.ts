@@ -3,4 +3,6 @@ referenceTransfert?;
 dateTransfert?;
 statut?;
 cinC?;
+transfertboutiquesByReferenceTransfert?;
+
 }

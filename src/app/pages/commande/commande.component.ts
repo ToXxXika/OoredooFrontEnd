@@ -115,8 +115,7 @@ export class CommandeComponent implements OnInit {
       this.PrenomClient = (document.getElementById("PrenomClient") as HTMLInputElement).value;
       this.NomClient = (document.getElementById("NomClient") as HTMLInputElement).value;
       let Qte = this.Quantite;
-      console.log(Qte);
-      let days: any = this.dateValue.getDay();
+      let days: any = this.dateValue.getDate();
       let month: any = this.dateValue.getMonth();
       let year: any = this.dateValue.getFullYear();
       this.Date = year + "-" + month + "-" + days;
@@ -178,6 +177,10 @@ export class CommandeComponent implements OnInit {
                   summary: 'Mise a jour',
                   detail: 'Erreur dans la mise a jour de stock de produit'
                 })
+                this.Obj.emit(DC);
+                this.DataTransfer.GetObjectCommande(DC);
+
+                this.router.navigateByUrl("/detailcommande")
               }
             }, error => {
               this.messageService.add({

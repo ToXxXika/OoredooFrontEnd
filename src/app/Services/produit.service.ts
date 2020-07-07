@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Boutique} from '../models/Boutique';
 import {Typeprod} from '../models/typeprod'
 import {Alert} from '../models/alert';
-import {boutiqueProduit} from '../models/boutiqueProduit';
+import {Transfert} from '../models/Transfert';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +23,25 @@ export class ProduitService {
   private UrlgetBoutiqueById= 'http://localhost:8080/Boutique/FindBoutiqueById';
   private UrlGetDescriptionbyType='http://localhost:8080/Produit/FindDesc';
   private UrlUpdateBoutiqueProduit = 'http://localhost:8080/BoutiqueProduit/updateBoutiqueProduit';
+  private UrlgetTransfertByCin= 'http://localhost:8080/transfert/getTransfertByCoursier';
+  private UrlUpdateTransfert = 'http://localhost:8080/transfert/updateTransfertStatus';
 
   public UpdateBoutiqueProduitStock(Qte:any,idbou:any,refprod:any){
     let opts : {params : HttpParams};
     opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod='+refprod})};
     return this.http.get(this.UrlUpdateBoutiqueProduit,opts)
   }
+  public UpdateTransfer(REF:any){
+    let opts : {params: HttpParams};
+    opts = {params: new HttpParams({fromString:'REFT='+REF})};
+    return this.http.get(this.UrlUpdateTransfert,opts)
+  }
 
-
-
+  public getTransfertBycin(user:any){
+    let opts : {params : HttpParams};
+    opts = {params : new HttpParams({fromString:'cin='+user})};
+    return this.http.get<Transfert[]>(this.UrlgetTransfertByCin,opts)
+  }
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
   }

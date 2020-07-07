@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Alert} from '../models/alert';
 import {TestClass} from '../models/TestClass';
 import {DetailsCommande} from '../models/DetailsCommande';
 

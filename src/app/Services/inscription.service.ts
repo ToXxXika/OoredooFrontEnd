@@ -15,12 +15,19 @@ export class InscriptionService {
   private getUserByrole= 'http://localhost:8080/users/GetUsersByRole';
   private getUserRole = 'http://localhost:8080/users/getUserRole';
   private getCourser = 'http://localhost:8080/users/getCoursier';
-
+  private UpdateCoursier = 'http://localhost:8080/coursier/updatestatusCoursier';
   private Result : boolean ;
 
   constructor(
     private http: HttpClient,
   ) {}
+
+  public UpdateCoursierStatus(cin:any){
+    let opts: {params : HttpParams}
+    opts = {params: new HttpParams({fromString: 'cin='+cin})};
+    return this.http.get(this.UpdateCoursier,opts);
+
+  }
   public CreerUtilisateur(personne: Personne): Observable<Personne> {
     return this.http.post<Personne>(this.urlConnect, personne);
   }

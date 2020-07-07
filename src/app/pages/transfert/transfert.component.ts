@@ -194,7 +194,7 @@ export class TransfertComponent implements AfterViewInit {
 
       });
       await new Promise(resolve => setTimeout(resolve, 1500));
-
+      //set timeout 0
       this.TransfertService.SaveTransfertBoutique(TB).subscribe(response =>{
         if(response){
           this.messageService.add({key:"SS",severity:'success',summary:'Détails',detail:'tous les operations sont terminés'});
