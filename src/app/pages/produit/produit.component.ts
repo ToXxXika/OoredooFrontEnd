@@ -31,6 +31,10 @@ export class ProduitComponent implements OnInit {
 
 
   LoadLists() {
+    this.TypeProdDropdown.push({label:"Liste des Types", value:""});
+    this.MarqueDropdown.push({label: "Liste des Marques", value: ""});
+    this.LibelleProdDropdown.push({label:"Liste des Libéllés",value:""});
+    
     this.ProdServ.getType().subscribe(TypeData => {
       for (let i = 0; i < TypeData.length; i++) {
         this.TypeProdDropdown.push({label: TypeData[i].description, value: TypeData[i].idType});

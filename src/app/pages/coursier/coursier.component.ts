@@ -3,6 +3,7 @@ import {ProduitService} from '../../Services/produit.service';
 import {Transfert} from '../../models/Transfert';
 import {InscriptionService} from '../../Services/inscription.service';
 import {MessageService} from 'primeng';
+import {TransfertService} from '../../Services/transfert.service';
 
 @Component({
   selector: 'app-coursier',
@@ -14,7 +15,7 @@ export class CoursierComponent implements OnInit {
   Transfert: Transfert[] = [];
   selectedTransfert: Transfert;
   rowData: any;
-  constructor(private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
+  constructor(private TransfertService: TransfertService,private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
 
   ngOnInit(): void {
     this.ProdService.getTransfertBycin('01234576').subscribe( Transferts =>{
@@ -22,7 +23,7 @@ export class CoursierComponent implements OnInit {
       }
     )
   }
-  AcceptTransfert(event: any){
+  AcceptTransfert(event: Transfert){
   /*  this.UserService.UpdateCoursierStatus('01234576').subscribe( Update =>{
       this.messageService.add({
         key: 'SS',
@@ -36,7 +37,9 @@ export class CoursierComponent implements OnInit {
       summary: 'Demande de transfert',
       detail: error
     }));*/
-    console.log(event);
+    this.TransfertService.UpdateTransfer(event.referenceTransfert).subscribe(upTransfert =>{
+
+    });
 
   }
 
