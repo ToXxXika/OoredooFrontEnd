@@ -12,6 +12,8 @@ import {MessageService} from 'primeng';
 })
 export class CoursierComponent implements OnInit {
   Transfert: Transfert[] = [];
+  selectedTransfert: Transfert;
+  rowData: any;
   constructor(private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
 
   ngOnInit(): void {
@@ -20,8 +22,8 @@ export class CoursierComponent implements OnInit {
       }
     )
   }
-  AcceptTransfert(){
-    this.UserService.UpdateCoursierStatus('01234576').subscribe( Update =>{
+  AcceptTransfert(event: any){
+  /*  this.UserService.UpdateCoursierStatus('01234576').subscribe( Update =>{
       this.messageService.add({
         key: 'SS',
         severity: 'success',
@@ -33,7 +35,9 @@ export class CoursierComponent implements OnInit {
       severity: 'danger',
       summary: 'Demande de transfert',
       detail: error
-    }))
-    this.
+    }));*/
+    console.log(event);
+
   }
+
 }

@@ -568,7 +568,7 @@ $input-focus-color:                     $input-color !default;
 $input-focus-width:                     0 !default;
 $input-focus-box-shadow:                none !default; //0 1px 3px 0 $gray-500 !default;
 
-$input-placeholder-color:               $gray-500 !default;
+$input-placeholder-color:               black !default;
 $input-focus-placeholder-color:         $gray-500 !default;
 
 $input-height-border:                   $input-border-width * 2 !default;
@@ -698,7 +698,7 @@ $nav-link-padding-y:                .25rem !default;
 $nav-link-padding-x:                .75rem !default;
 $nav-link-color:                    $gray-700 !default;
 $nav-link-hover-color:              theme-color("primary") !default;
-$nav-link-disabled-color:           $gray-600 !default;
+$nav-link-disabled-color:           black !default;
 
 $nav-pills-padding-y:               .75rem !default;
 $nav-pills-padding-x:               1rem !default;

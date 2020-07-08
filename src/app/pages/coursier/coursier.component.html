@@ -1,4 +1,4 @@
-<p-table [value]="Transfert">
+<p-table selectionMode="single" [(selection)]="selectedTransfert" responsive= true [value]="Transfert">
   <ng-template pTemplate="header">
     <tr>
       <th>Reference Transfert</th>
@@ -9,14 +9,14 @@
       <th>Action</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-T>
-    <tr>
+  <ng-template pTemplate="body"  let-T>
+    <tr [pSelectableRow]="T">
       <td>{{T.referenceTransfert}}</td>
       <td>{{T.dateTransfert}}</td>
       <td>Ooredoo Lac 2 </td>
       <td>Ooredoo Tunis </td>
       <td>TIME HERE</td>
-      <td><button pButton type="button" label="Confirmer"  (click)="AcceptTransfert()" class="ui-button-success"></button></td>
+      <td><button pButton type="button" label="Confirmer"  (click)="AcceptTransfert(T)" class="ui-button-success"></button></td>
     </tr>
   </ng-template>
 </p-table>

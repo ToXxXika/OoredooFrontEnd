@@ -24,18 +24,13 @@ export class ProduitService {
   private UrlGetDescriptionbyType='http://localhost:8080/Produit/FindDesc';
   private UrlUpdateBoutiqueProduit = 'http://localhost:8080/BoutiqueProduit/updateBoutiqueProduit';
   private UrlgetTransfertByCin= 'http://localhost:8080/transfert/getTransfertByCoursier';
-  private UrlUpdateTransfert = 'http://localhost:8080/transfert/updateTransfertStatus';
 
   public UpdateBoutiqueProduitStock(Qte:any,idbou:any,refprod:any){
     let opts : {params : HttpParams};
     opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod='+refprod})};
     return this.http.get(this.UrlUpdateBoutiqueProduit,opts)
   }
-  public UpdateTransfer(REF:any){
-    let opts : {params: HttpParams};
-    opts = {params: new HttpParams({fromString:'REFT='+REF})};
-    return this.http.get(this.UrlUpdateTransfert,opts)
-  }
+
 
   public getTransfertBycin(user:any){
     let opts : {params : HttpParams};

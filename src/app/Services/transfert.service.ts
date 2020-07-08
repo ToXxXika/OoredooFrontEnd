@@ -12,11 +12,15 @@ export class TransfertService {
   private UrlSaveTrans = 'http://localhost:8080/transfert/SaveTrans';
   private UrlLocation = 'https://www.mapquestapi.com/directions/v2/route?key=7px1Em8h2JvhCDongWAiIGLgQefXi9KF';
   private UrlSaveTransfertBoutique = 'http://localhost:8080/transfertboutique/SaveTransfertBoutique';
-  // don't forget to complete me please :(
-  private UrlGetTransfertByCoursier = 'http://localhost:8080/Transfert/getTransfertByCoursier';
+  private UrlUpdateTransfert = 'http://localhost:8080/transfert/updateTransfertStatus';
 
 
   constructor(private http: HttpClient) { }
+  public UpdateTransfer(REF:any){
+    let opts : {params: HttpParams};
+    opts = {params: new HttpParams({fromString:'REFT='+REF})};
+    return this.http.get(this.UrlUpdateTransfert,opts)
+  }
   public SaveTransfert(T:Transfert):Observable<Transfert> {
     return this.http.post<Transfert>(this.UrlSaveTrans,T);
   }
@@ -29,9 +33,5 @@ export class TransfertService {
   public Location(Body: string){
     return this.http.post(this.UrlLocation, Body);
   }
-  public getTransfertByCoursier(userName: string){
-    let opts : { params : HttpParams};
-    opts = {params : new HttpParams({fromString:`username=${userName}`})};
-    return this.http.get<Transfert>(this.UrlGetTransfertByCoursier,opts);
-  }
+
 }
