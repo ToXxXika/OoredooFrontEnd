@@ -17,7 +17,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import {CalendarModule} from 'primeng/calendar';
 import {TransfertComponent} from '../../pages/transfert/transfert.component';
 import {DropdownModule} from 'primeng/dropdown';
-import {DialogModule, MessageModule, PanelModule} from 'primeng';
+import {CardModule, DialogModule, MessageModule, PanelModule} from 'primeng';
+import {KeyFilterModule} from 'primeng/keyfilter';
+
 
 
 
@@ -39,7 +41,9 @@ import {DialogModule, MessageModule, PanelModule} from 'primeng';
     ReactiveFormsModule,
     PanelModule,
     DialogModule,
-    MessageModule
+    MessageModule,
+    CardModule,
+    KeyFilterModule
 
 
   ],

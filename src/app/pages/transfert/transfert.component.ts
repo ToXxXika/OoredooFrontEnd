@@ -61,7 +61,7 @@ export class TransfertComponent implements AfterViewInit {
            }
          }
      for(let j=0 ;j<this.P.length;j++){
-       if(this.P[j]['coursierByCin']['disponibilite'] == false){
+       if(this.P[j]['coursierByCin']['disponibilite'] == true){
          console.log(this.P[j]['cin']);
          this.CoursierTab.push({label:this.P[j]['nom']+" "+this.P[j]['prenom'],value:this.P[j]['cin']});
        }
@@ -101,7 +101,6 @@ export class TransfertComponent implements AfterViewInit {
         (document.getElementById("BoutiqueDestinataire") as HTMLOutputElement).value =this.Alert.nomBoutique;
         this.idBou = this.Alert.idBou;
         this.idAlert = this.Alert.idAlert ;
-
         this.ExtractionLocation(this.Alert.localisation);
      }
     });
@@ -124,7 +123,6 @@ export class TransfertComponent implements AfterViewInit {
          this.TableRes.length = 0 ;
          this.BPTable.length = 0 ;
          for (let i = 0; i < Prod[0].boutiqueproduitsByReferenceProduit.length; i++) {
-          // console.log(Prod[0].boutiqueproduitsByReferenceProduit[i]);
            this.ProdService.getBoutiqueById(Prod[0].boutiqueproduitsByReferenceProduit[i].idBou).subscribe(Result => {
              this.BPTable.push(Result);
            });
@@ -136,18 +134,17 @@ export class TransfertComponent implements AfterViewInit {
            for (let i = 0; i < this.BPTable.length; i++) {
              let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
              this.Res = this.getCoordinates(Pos, Pos2);
-             await new Promise(resolve => setTimeout(resolve, 900));
+             await new Promise(resolve => setTimeout(resolve, 1500));
              this.TableRes.push(this.Res);
            }
          }
-         console.log("============= BPTABLE");
-         console.log(this.BPTable);
       }
       let loop =async ()=>{
        await new Promise((resolve,reject)=>{
          resolve(loop2());
        }).then((value => {
          value = this.TableRes;
+         console.log("Hello");
          for(let i = 0 ; i<this.BPTable.length;i++){
            console.log(this.TableRes[i] +" " +this.BPTable[i].nomBoutique);
          }
@@ -186,6 +183,7 @@ export class TransfertComponent implements AfterViewInit {
       '  }\n' +
       '}';
     this.TransfertService.Location(tab).subscribe(data => {
+      console.log('i ve reached the API');
       this.Res = data['route']['distance'];
   });
     return this.Res ;

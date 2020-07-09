@@ -17,73 +17,76 @@ export class RegisterComponent implements OnInit {
   CIN:string ;
   Prenom:string ;
   Nom:string;
-  m:string ;
+  Mail:string ;
   MotPasse:string ;
   columns : any [];
   Users : any[]=[];
   items:MenuItem[];
+  NumTel: number;
+  Role: any;
+  clonedPersonne: { [s: string]: Personne; } = {};
   constructor(private messageService: MessageService,private inscriptionS: InscriptionService ) { }
   ClearData(){
-    this.m='';
+    this.Mail='';
     this.MotPasse='';
     this.Prenom='';
     this.Nom='';
     this.Utilisateur='';
     this.CIN='';
+    this.NumTel = 0 ;
     // need to add NumTel here
   }
   AjoutPersonne() {
-    const X = (document.getElementById('CIN') as HTMLInputElement).value;
-    const Prenom = (document.getElementById('Prenom')as HTMLInputElement).value;
-    const  Nom = (document.getElementById('Nom')as HTMLInputElement).value ;
-    const MDP = (document.getElementById('Motdepasse')as HTMLInputElement).value ;
-    const mail = (document.getElementById('mail') as HTMLInputElement).value;
-    const username = (document.getElementById('Utilisateur')as HTMLInputElement).value ;
-    this.P.username = username ;
-    this.P.cin = X ;
-    this.P.motdepasse = MDP ;
-    this.P.role = "Admin" ;
-    this.P.mail = mail;
-    this.P.nom = Nom ;
-    this.P.prenom = Prenom ;
-    this.P.numTel = 94190986 ;
 
-    console.log(this.P);
+    this.P.username = this.Utilisateur ;
+    this.P.cin = this.CIN ;
+    this.P.motdepasse = this.MotPasse ;
+    this.P.role = this.Role ;
+    this.P.mail = this.Mail;
+    this.P.nom = this.Nom ;
+    this.P.prenom = this.Prenom ;
+    this.P.numTel = this.NumTel ;
+    console.log(this.P)
     this.inscriptionS.CreerUtilisateur(this.P).subscribe(data => {
-      this.messageService.add({key: 'SS', severity: 'success', summary: ':D', detail:'Utilisateur Ajouté'});
-     console.log("EEEE");
-      this.ClearData();
-    },error => {      this.messageService.add({key: 'SS', severity: 'danger', summary: error, detail:'utilisateur non ajouté. Erreur'});
+      if(data) {
+        this.messageService.add({key: 'SS', severity: 'success', summary: 'Gestion des utilisateurs', detail: 'Utilisateur ajouté'});
+        console.log("EEEE");
+        this.ClearData();
+      }else {
+        this.messageService.add({key: 'SS', severity: 'warn', summary: 'Gestion des utilisateurs', detail: 'Utilisateur non ajouté'});
+      }
+    },error => {      this.messageService.add({key: 'SS', severity: 'danger', summary: error, detail:'une erreur est survenue'});
     });
   }
-  ModifierPersonne(){}
-  SupprimerPersonne(){}
 
   ngOnInit() {
     this.inscriptionS.Utilisateurs().subscribe(UserData =>{
       this.Users = UserData;
     });
     this.columns = [
-      {field: 'Cin', header :'Cin'},
-      { field: 'Nom', header: 'Nom' },
-      { field: 'Prenom', header: 'Prenom' },
-      { field: 'Utilisateur', header: 'Utilisateur' }
+      {label: 'Administrateur', value :'Admin'},
+      { label: 'Coursier', value: 'Coursier' },
+      { label: 'Agent Commercial', value: 'AgentCommercial' }
     ];
-    this.items = [{
-      label: 'File',
-      items: [
-        {label: 'New', icon: 'pi pi-fw pi-plus'},
-        {label: 'Download', icon: 'pi pi-fw pi-download'}
-      ],
-
-    },
-      {
-        label: 'Edit',
-        items: [
-          {label: 'Add User', icon: 'pi pi-fw pi-user-plus'},
-          {label: 'Remove User', icon: 'pi pi-fw pi-user-minus'}
-        ]
-      }];
 
 }
+
+  onRowEditInit(rowData: any) {
+      this.clonedPersonne[rowData.cin]= {...rowData}
+  }
+  onRowDelete(rowdata: any){
+    this.inscriptionS.deleteUser(rowdata.cin).subscribe(response=>{
+      if(response){
+        this.messageService.add({key:'SS', severity:'success',summary:'Gestion des utilisateurs',detail:'Utilisateur supprimé'})
+      }else {
+        this.messageService.add({key:'SS', severity:'warn',summary:'Gestion des utilisateurs',detail:'suppression a échouée'})
+      }
+    },error => {
+      this.messageService.add({key:'SS', severity:'danger',summary:'Gestion des utilisateurs',detail:'Erreur lors du Suppression'})
+    })
+  }
+
+  onRowEditSave(rowData: any) {
+
+  }
 }

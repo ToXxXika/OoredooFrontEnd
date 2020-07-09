@@ -1,3 +1,4 @@
+<p-toast key="SS" position="top-right"></p-toast>
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8 ">
   <div class="separator separator-bottom separator-skew zindex-100">
     <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -6,152 +7,87 @@
   </div>
 </div>
 <!-- Page content -->
-<div class="container-fluid mt--5 pb-5">
   <!-- Table -->
-  <div class="row">
-    <div class=" col-sm-1 col-lg-6 col-md-6">
-      <div class="card bg-secondary shadow border-0">
-        <div class="card-body px-lg-5 py-lg-5">
-          <form role="form">
-            <div class="form-group">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-app"></i></span>
-                </div>
-                <input class="form-control" placeholder="Nom utilisateur" type="text" id="Utilisateur" >
-              </div>
-            </div>
-            <!-- ////////// -->
-            <div class="form-group">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
-                </div>
-                <input class="form-control" placeholder="CIN" type="text" id="CIN"  >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
-                </div>
-                <input class="form-control" placeholder="Nom" type="text" id="Nom" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
-                </div>
-                <input class="form-control" placeholder="Prenom" type="text" id="Prenom"  >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                </div>
-                <input class="form-control" placeholder="Email" type="email" id="mail">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group input-group-alternative">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                </div>
-                <input class="form-control" placeholder="Mot de passe" type="password" id="Motdepasse" >
-              </div>
-            </div>
-            <div class="text-center">
-              <button type="button" class="btn btn-primary mt-4" (click)="AjoutPersonne()">Créer un Compte</button>
-                  <p-toast key="SS" position="top-right"></p-toast>
-            </div>
-          </form>
-        </div>
+  <div class="ui-fluid">
+    <div class="row">
+      <div class=" col-sm-1 col-lg-6 col-md-6">
+        <p-panel>
+          <p-header style="position: center"><strong>Formulaire d' Ajout</strong></p-header>
+          Cin <Input pInputText [(ngModel)]="CIN" ngDefaultControl type="text">
+          Nom utilisateur : <Input pInputText [(ngModel)]="Utilisateur" ngDefaultControl  type="text">
+          Mot de passe :  <Input pInputText [(ngModel)]="MotPasse" ngDefaultControl type="text">
+          Email :  <Input pInputText [(ngModel)]="Mail" ngDefaultControl type="text">
+          Nom :  <Input pInputText [(ngModel)]="Nom" ngDefaultControl type="text">
+          Prenom :  <Input pInputText [(ngModel)]="Prenom" ngDefaultControl type="text">
+          Numero : <Input pInputText [(ngModel)]="NumTel" ngDefaultControl type="text">
+          Role : <p-dropdown [options]="columns" ngDefaultControl [(ngModel)]="Role"></p-dropdown>
+          <p-footer>
+            <button pButton class="ui-button-rounded" (click)="AjoutPersonne()" label="Créer un Compte"></button>
+          </p-footer>
+        </p-panel>
       </div>
     </div>
   </div>
+
   <div class="row">
-  <!--  <p-table #dt [columns]="columns" [value]="this.Users">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <td *ngFor="let col of columns">
-            {{col.header}}
-          </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-data>
-        <tr>
-          <td>{{data.cin}}</td>
-          <td>{{data.nom}}</td>
-          <td>{{data.prenom}}</td>
-          <td>{{data.username}}</td>
-          <td>
 
-          </td>
-        </tr>
-
-      </ng-template>
-
-    </p-table>-->
     <div class="table-responsive">
-      <table class="table align-items-center table-dark" >
-        <thead class="thead-dark">
-
+      <p-table [value]="Users"  dataKey ="cin" editMode="row">
+        <ng-template pTemplate="header">
         <tr>
-          <th scope="col">Cin</th>
-          <th scope="col">Nom</th>
-          <th scope="col">Prenom</th>
-          <th scope="col">Role</th>
-          <th scope="col">Utilisateur</th>
+          <th style="color: deepskyblue">Cin</th>
+          <th style="color: deepskyblue">Nom</th>
+          <th style="color: deepskyblue">Prenom</th>
+          <th style="color: deepskyblue">Role</th>
+          <th style="color: deepskyblue">Utilisateur</th>
+          <th style="color: deepskyblue">Actions</th>
         </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let data of this.Users">
-        <tr>
-          <th scope="row">
-            <div class="media align-items-center">
-              <a href="#" class="avatar rounded-circle mr-3">
-                <img alt="Image placeholder" src="assets/img/theme/bootstrap.jpg">
-              </a>
-              <div class="media-body">
-                <span class="mb-0 text-sm">{{data.cin}}</span>
-              </div>
-            </div>
-          </th>
+        </ng-template>
+        <ng-template pTemplate="body"   let-U let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="U">
+          <td>{{U.cin}}</td>
           <td>
-           {{data.nom}}
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="U.nom" required>
+                </ng-template>
+                <ng-template pTemplate="output">
+                {{U.nom}}
+                </ng-template>
+              </p-cellEditor>
           </td>
           <td>
-            <span class="badge badge-dot mr-4">
-            {{data.prenom}}
-            </span>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="U.prenom" required></ng-template>
+              <ng-template pTemplate="output">
+                 {{U.prenom}}
+              </ng-template>
+            </p-cellEditor>
+             </td>
+          <td>
+            {{U.role}}
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="U.username" required></ng-template>
+              <ng-template pTemplate="output">
+                {{U.username}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align:center">
+            <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-user-edit" class="ui-button-info" (click)="onRowEditInit(U)"></button>
+            <button *ngIf="editing" pButton type="button" pSaveEditableRow  icon="pi pi-check-circle" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(U)"></button>
+            <button *ngIf="editing" pButton type="button" pSaveEditableRow  icon="pi pi-minus-circle" class="ui-button-warning" style="margin-right: .5em" (click)="onRowDelete(U)"></button>
+            <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
 
-          </td>
-          <td>
-          {{data.role}}
-          </td>
-          <td>
-           {{data.username}}
-          </td>
-          <td class="text-right">
-            <div ngbDropdown placement="bottom-right">
-              <a class="btn btn-sm btn-icon-only text-light"  ngbDropdownToggle>
-                <i class="fas fa-ellipsis-v"></i>
-              </a>
-              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                <a class="dropdown-item" (click)="ModifierPersonne()" >Modification</a>
-                <a class="dropdown-item" (click)="SupprimerPersonne()">Suppression</a>
-
-
-              </div>
-            </div>
           </td>
         </tr>
-        </ng-container>
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </div>
   </div>
-</div>
+
 

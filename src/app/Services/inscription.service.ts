@@ -16,11 +16,17 @@ export class InscriptionService {
   private getUserRole = 'http://localhost:8080/users/getUserRole';
   private getCourser = 'http://localhost:8080/users/getCoursier';
   private UpdateCoursier = 'http://localhost:8080/coursier/updatestatusCoursier';
+  private UrlDeleteUserByCin = 'http://localhost:8080/users/deleteByCin';
   private Result : boolean ;
 
   constructor(
     private http: HttpClient,
   ) {}
+  public deleteUser(cin:string){
+    let opts : {params : HttpParams}
+    opts = {params : new HttpParams({fromString:'cin='+cin})};
+    return this.http.get(this.UrlDeleteUserByCin,opts);
+  }
 
   public UpdateCoursierStatus(cin:any){
     let opts: {params : HttpParams}

@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                    RoleGuard="AgentCommercial";
                    LoginComponent.P.Verification(data,true);
                    localStorage.setItem("Role",RoleGuard)
-                   this.router.navigateByUrl('/produit');
+                   this.router.navigateByUrl('/produits');
                    break;
                  }
                  default: {
