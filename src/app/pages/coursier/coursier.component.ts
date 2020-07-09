@@ -4,6 +4,8 @@ import {Transfert} from '../../models/Transfert';
 import {InscriptionService} from '../../Services/inscription.service';
 import {MessageService} from 'primeng';
 import {TransfertService} from '../../Services/transfert.service';
+import {LoginComponent} from '../login/login.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-coursier',
@@ -15,13 +17,18 @@ export class CoursierComponent implements OnInit {
   Transfert: Transfert[] = [];
   selectedTransfert: Transfert;
   rowData: any;
-  constructor(private TransfertService: TransfertService,private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
+  constructor(private router: Router,private TransfertService: TransfertService,private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
 
   ngOnInit(): void {
-    this.ProdService.getTransfertBycin('01234576').subscribe( Transferts =>{
-      this.Transfert = Transferts ;
-      }
-    )
+    if(Object.keys(LoginComponent.P).length === 0){
+      console.log("im empty");
+      this.router.navigateByUrl("/login");
+    }else {
+      this.ProdService.getTransfertBycin(LoginComponent.P.cin).subscribe(Transferts => {
+        this.Transfert = Transferts;
+      })
+    }
+
   }
   AcceptTransfert(event: Transfert){
   /*  this.UserService.UpdateCoursierStatus('01234576').subscribe( Update =>{

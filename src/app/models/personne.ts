@@ -7,6 +7,11 @@ export class Personne {
   motdepasse?;
   role?;
   numTel?;
+  idbou?;
+  horaireDeTravail?;
+  disponibilite?;
+  coursierByCin?;
+  agentcommercialByCin?;
   // Fix
 
 }

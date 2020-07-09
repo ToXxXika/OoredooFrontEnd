@@ -6,9 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
-import { IconsComponent } from '../../pages/icons/icons.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
-import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterComponent } from '../../pages/register/register.component';
 import {ToastModule} from "primeng/toast";
@@ -19,6 +17,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {CalendarModule} from 'primeng/calendar';
 import {TransfertComponent} from '../../pages/transfert/transfert.component';
 import {DropdownModule} from 'primeng/dropdown';
+import {DialogModule, MessageModule, PanelModule} from 'primeng';
 
 
 
@@ -37,16 +36,16 @@ import {DropdownModule} from 'primeng/dropdown';
     InputTextModule,
     CalendarModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PanelModule,
+    DialogModule,
+    MessageModule
 
 
   ],
   declarations: [
-    //to delete useless components
     DashboardComponent,
     UserProfileComponent,
-    TablesComponent,
-    IconsComponent,
     RegisterComponent,
     TransfertComponent
   ]

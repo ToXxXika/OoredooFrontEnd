@@ -6,15 +6,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import {BoutiqueLayoutComponent} from './layouts/boutique-layout/boutique-layout.component';
+import {RouteguardService} from './Services/routeguard.service';
+import {RouteguardAgentService} from './Services/routeguard-agent.service';
 
 const routes: Routes =[
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full',
   }, {
     path: '',
     component: AdminLayoutComponent,
+    canActivate:[RouteguardService],
     children: [
       {
         path: '',
@@ -34,6 +37,7 @@ const routes: Routes =[
   }, {
     path: '',
     component: BoutiqueLayoutComponent,
+    canActivate:[RouteguardAgentService],
     children: [
       {
         path: '',

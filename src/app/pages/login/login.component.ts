@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
 import {Personne} from '../../models/personne';
+import {StaticPersonne} from '../../models/StaticPersonne';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,7 @@ import {Personne} from '../../models/personne';
 export class LoginComponent implements OnInit, OnDestroy {
   private CookieCinValue: string ;
   private CookiePasswordValue: string ; // need to fix Cookies Configuration
-  static P:Personne;
+  static P:StaticPersonne = new StaticPersonne();
   constructor(private inscriptionService: InscriptionService, private router: Router,private cookieService: CookieService,private messageService: MessageService) {}
  public LoadLocalstorageKeys(KeyName: string):string{
      switch (KeyName) {
@@ -55,53 +56,58 @@ export class LoginComponent implements OnInit, OnDestroy {
    let namesurname: string;
     const username = (document.getElementById('cin') as HTMLInputElement).value;
     const motdepasse = (document.getElementById('motdepasse') as HTMLInputElement).value;
-    if (this.CheckInputs()) {
-      if ((this.inscriptionService.login(username, motdepasse))) {
-        console.log("UserNotFound");
-        //this.router.navigate([LoginComponent]);
-      } else {
-        //localStorage for All data about that specific user so we can display his/her Profile
-        this.inscriptionService.GetUserRole(username).subscribe(data => {
-          namesurname= data["nom"]+" "+data["prenom"];
-          localStorage.setItem(this.LoadLocalstorageKeys('KeyUser'),namesurname);
-          switch (data["role"]) {
-            case 'Admin' : {
-             // LoginComponent.P = new Personne(data,true);
-              // console.log(LoginComponent.P);
-              //this.router.navigateByUrl('/dashboard');
-              break;
-            }
-            case 'Coursier': {
-             // LoginComponent.P = new Personne(data,true);
-              //a Faire InterFace d'un Coursier
-            //  this.router.navigateByUrl('/Coursier');
-              break;
-            }
-            case 'AgentCommercial': {
-             // LoginComponent.P = new Personne(data, true);
-             // console.log(data);
-              //  console.log(LoginComponent.P)
-              //a faire interface d'un Agent Commercial
-             // this.router.navigateByUrl('/boutique');
+    if (this.CheckInputs(username,motdepasse)) {
 
-              break;
-            }
-            default: {
-              alert("ERROR IN TABLE USER IS NOT FOUND ");
-              break;
-            }
-          }
-        })
-      }
+       this.inscriptionService.login(username,motdepasse).subscribe( response=> {
+         console.log(response);
+           if(response['authenticated']=== true){
+             let RoleGuard = "" ;
+             this.inscriptionService.GetUserRole(username).subscribe(data => {
+               console.log(data);
+               namesurname= data["nom"]+" "+data["prenom"];
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyUser'),namesurname);
+               switch (data["role"]) {
+                 case 'Admin' : {
+                   RoleGuard ="Admin";
+                    LoginComponent.P.Verification(data,true);
+                    localStorage.setItem("Role",RoleGuard)
+                   this.router.navigateByUrl('/dashboard');
+                   break;
+                 }
+                 case 'Coursier': {
+                   RoleGuard="Coursier";
+                   LoginComponent.P.Verification(data,true);
+                   localStorage.setItem("Role",RoleGuard)
+                   this.router.navigateByUrl('/coursier');
+                   break;
+                 }
+                 case 'AgentCommercial': {
+                   RoleGuard="AgentCommercial";
+                   LoginComponent.P.Verification(data,true);
+                   localStorage.setItem("Role",RoleGuard)
+                   this.router.navigateByUrl('/produit');
+                   break;
+                 }
+                 default: {
+                   this.messageService.add({key:"SS",severity:"danger",summary:"Gestion des utilisateurs",detail:"Role inconnu pour cet utilisateur"});
+                   break;
+                 }
+               }
+             })
+           }
+       },error => {
+         this.messageService.add({key:"SS",severity:"warn",summary:"Gestion des utilisateurs",detail:"Utilisateur introuvable"});
+       })
+
     }
   }
-  //Pour la verification des Champs du formulaire
-  CheckInputs():boolean{
 
-     const  username = (document.getElementById('cin') as HTMLInputElement).value;
-    const motdepasse = (document.getElementById('motdepasse') as HTMLInputElement).value;
+
+
+  //Pour la verification des Champs du formulaire
+  CheckInputs(username:any,motdepasse: any):boolean{
     if((username.length==0)||(motdepasse.length==0)){
-      this.messageService.add({key:"ErrorInput",severity:"warn",detail:"les champs sont vides "});
+      this.messageService.add({key:"SS",severity:"warn",detail:"les champs sont vides "});
       return  false ;
     }else {
       return true ;
@@ -118,7 +124,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   };
   ngOnInit() {
-
+     localStorage.clear();
     this.CookieCinValue = this.cookieService.get('CIN');
     this.CookiePasswordValue = this.cookieService.get('motdepasse');
   }

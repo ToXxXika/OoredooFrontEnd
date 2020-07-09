@@ -50,19 +50,13 @@ export class InscriptionService {
     return this.http.get<Personne[]>(this.getUserByrole);
   }
   //this function is used to Login with Crypt ( Basic Authentication in the backend)
- public login(username: string , password: string ):boolean {
+ public login(username: string , password: string ) {
+    console.log(username);
+    console.log(password);
+
     const headers = new HttpHeaders({Authorization: 'Basic ' + btoa(username + ':' + password)});
-   this.http.get<any>(this.VerifUser, {headers}).subscribe( data => {
-     if(data=== null){
-       console.log("true");
-       this.Result =true ;
-     }else {
-       console.log("false");
-       this.Result = false;
-     }
-   });
-   return  this.Result ;
- }
+   return this.http.get<any>(this.VerifUser, {headers})};
+
  public Utilisateurs(){
     return this.http.get<Personne[]>(this.getUsers);
  }

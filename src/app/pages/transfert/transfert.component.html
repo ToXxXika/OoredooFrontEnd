@@ -9,50 +9,52 @@
     </div>
   </div>-->
 </div>
+<p-dialog header="Details Transferts" [(visible)]="displayposition" [position]="position" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+  <div class="card">
+    <div class="card-body">
+      <div class="ui-fluid">
+        Reference Transfert : <input type="text" pInputText  disabled [(ngModel)]="RefTranDialog"/>
+        Date Transfert : <input type="text" pInputText  disabled [(ngModel)]="DateDualog"/>
+        Statut De Transfert : <input type="text" pInputText disabled [(ngModel)]="StatutTransDialog"/>
+        Coursier : <input type="text" pInputText disabled [(ngModel)]="CoursierDialog"/>
+        Boutique Emetteur : <input type="text" pInputText disabled [(ngModel)]="BoutiqueEmDialog"/>
+        Boutique Destinataire: <input type="text" pInputText disabled [(ngModel)]="BooutiqueDisDialog"/>
+      </div>
+    </div>
+
+  </div>
+</p-dialog>
 <div class ="container-fluid mt--2">
   <div class="row">
    <div class="col-xl-4 mb-5 mb-x1-0">
 
      <div class="table-responsive">
-       <table class="table align-items-center ">
-         <thead class="thead-dark">
-         <tr>
-           <th scope="col">Reference Transfert</th>
-           <th scope="col">Statut</th>
-         </tr>
-         </thead>
-         <tbody>
-         <tr>
-           <th scope="row">
-             <div class="media align-items-center">
-               <a href="#" class="avatar rounded-circle mr-3">
-                 <img alt="Image placeholder" src="assets/img/theme/bootstrap.jpg">
-               </a>
-               <div class="media-body">
-                 <span class="mb-0 text-sm">ID TRANS HERE</span>
-               </div>
-             </div>
-           </th>
-           <td>
-            <span class="badge badge-dot mr-4">
-              <i class="bg-warning"></i> pending
-            </span>
-           </td>
-         </tr>
-         </tbody>
-       </table>
-
+      <p-table [value]="TransfertTab" >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Reference Transfert</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+          <ng-template pTemplate="body" let-T>
+            <tr>
+            <td>{{T.referenceTransfert}}</td>
+              <ng-container ngSwitch="{{T.statut}}">
+            <td *ngSwitchCase="1"><p-message severity="success" text=" Terminé"></p-message></td>
+            <td *ngSwitchCase="0"><p-message severity="warn" text=" En Cours"></p-message></td>
+              </ng-container>
+              <td><button pButton type="button" class="ui-button-secondary" (click)="showDetailsTransfert(T,'topright')" icon="pi pi-cog"></button></td>
+            </tr>
+          </ng-template>
+      </p-table>
      </div>
     </div>
       <div class="col-xl-8 col-lg-4">
-        <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <h5 class="card-title text-uppercase text-muted mb-0">Menu Transfert</h5>
-            </div>
-        </div>
-          <br>
+        <p-panel>
+          <p-header>Formuliare de Transfert</p-header>
+
         <form role="form" [formGroup]="TransfertForm" >
           <div class="ui-fluid">
           <div class="form-group">
@@ -69,7 +71,7 @@
 </span>
           </div>
           <div class="form-group">
-            <!-- i need to get the closest Boutique -->
+            <!-- i need to get the closest Store -->
             <span class="ui-float-label">
     <input id="BoutiqueEmetteur" type="text" size="30"   pInputText>
     <label for="BoutiqueEmetteur">BoutiqueEmetteur</label>
@@ -91,8 +93,7 @@
           </div>
           </div>
         </form>
-      </div>
-      </div>
+        </p-panel>
   </div>
 
 </div>

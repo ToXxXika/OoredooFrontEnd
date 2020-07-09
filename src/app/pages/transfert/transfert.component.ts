@@ -32,6 +32,16 @@ export class TransfertComponent implements AfterViewInit {
    idAlert: any ;
    TableRes:any[] ;
    BPTable: any[] = [];
+  private position: string;
+  displayposition: boolean;
+  //elements when calling the Dialog Box
+  RefTranDialog: any;
+  StatutTransDialog: any;
+  CoursierDialog: any;
+  BoutiqueEmDialog: any;
+  BooutiqueDisDialog: any;
+  DateDualog: any;
+
   constructor(private messageService: MessageService,private fb:FormBuilder,private DataTransfer: DataTransferService,private ProdService: ProduitService, private TransfertService: TransfertService, private PersonneService: InscriptionService) {
   }
 
@@ -60,10 +70,24 @@ export class TransfertComponent implements AfterViewInit {
 
   }
   //cette fonction est utilisée pour remplir le tableau dans la page transfertHTML
+
   RecuperationTransfert() {
     this.TransfertService.recupererTransfert().subscribe(TransfertData => {
+      console.log(TransfertData);
       this.TransfertTab = TransfertData;
     });
+  }
+  showDetailsTransfert(row:any ,position: string) {
+    console.log(row);
+    this.RefTranDialog= row.referenceTransfert ;
+    this.StatutTransDialog = row.statut ;
+    this.CoursierDialog = row.cinC;
+    this.BoutiqueEmDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouEmetteur'];
+    this.BooutiqueDisDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouDestinataire'];
+    this.DateDualog=row.dateTransfert ;
+
+    this.position = position;
+    this.displayposition = true;
   }
   GetDataFromDataTransferService(){
     this.DataTransfer.CurrentAlert.subscribe(message => {

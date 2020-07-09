@@ -10,11 +10,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import {InputTextModule} from "primeng/inputtext";
-import {TableModule} from "primeng/table";
 import { TestToastComponent } from './test-toast/test-toast.component';
 import {BrowserModule} from "@angular/platform-browser";
 import {MenuModule} from "primeng/menu";
 import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layout.component';
+import {RouteguardService} from './Services/routeguard.service';
+import {RouteguardAgentService} from './Services/routeguard-agent.service';
+import {RouteguardCoursierService} from './Services/routeguard-coursier.service';
 
 
 @NgModule({
@@ -28,7 +30,6 @@ import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layo
     RouterModule,
     AppRoutingModule,
     InputTextModule,
-    TableModule,
     MenuModule
 
   ],
@@ -41,7 +42,7 @@ import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layo
 
 
   ],
-  providers: [],
+  providers: [RouteguardService,RouteguardAgentService,RouteguardCoursierService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

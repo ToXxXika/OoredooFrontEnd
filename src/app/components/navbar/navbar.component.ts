@@ -44,7 +44,6 @@ export class NavbarComponent implements OnInit {
   goToTransfert(d:any){
     this.Obj.emit(d);
      this.DataTransfer.GetObjectAlert(d);
-
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());
@@ -62,7 +61,7 @@ export class NavbarComponent implements OnInit {
   getAlerts(){
        this.prodservice.recupererBoutique().subscribe( AlertData =>{
 
-          for(let A of AlertData){
+        for(let A of AlertData){
             if(Object.keys(A["alertsByIdBoutique"]).length !==0){
              let L:TestClass = new TestClass();
              for (let i=0;i<A['alertsByIdBoutique'].length;i++) {
@@ -73,8 +72,8 @@ export class NavbarComponent implements OnInit {
                L.libelle = A['alertsByIdBoutique'][i]['libelle'];
                L.marque = A['alertsByIdBoutique'][i]['marque'];
                L.type = A['alertsByIdBoutique'][i]['type'];
+               this.AlertsTab.push(L);
              }
-              this.AlertsTab.push(L);
             }
           }
        })
