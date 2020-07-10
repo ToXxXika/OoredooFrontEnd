@@ -17,6 +17,7 @@ import { BoutiqueLayoutComponent } from './layouts/boutique-layout/boutique-layo
 import {RouteguardService} from './Services/routeguard.service';
 import {RouteguardAgentService} from './Services/routeguard-agent.service';
 import {RouteguardCoursierService} from './Services/routeguard-coursier.service';
+import { CoursierLayoutComponent } from './layouts/coursier-layout/coursier-layout.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {RouteguardCoursierService} from './Services/routeguard-coursier.service'
     AuthLayoutComponent,
     TestToastComponent,
     BoutiqueLayoutComponent,
+    CoursierLayoutComponent,
 
 
   ],

@@ -15,7 +15,7 @@ export class InscriptionService {
   private getUserByrole= 'http://localhost:8080/users/GetUsersByRole';
   private getUserRole = 'http://localhost:8080/users/getUserRole';
   private getCourser = 'http://localhost:8080/users/getCoursier';
-  private UpdateCoursier = 'http://localhost:8080/coursier/updatestatusCoursier';
+  private UpdateCoursier = 'http://localhost:8080/users/updateUser';
   private UrlDeleteUserByCin = 'http://localhost:8080/users/deleteByCin';
   private Result : boolean ;
 
@@ -28,9 +28,9 @@ export class InscriptionService {
     return this.http.get(this.UrlDeleteUserByCin,opts);
   }
 
-  public UpdateCoursierStatus(cin:any){
+  public UpdateCoursierStatus(cin:any,dispo:any){
     let opts: {params : HttpParams}
-    opts = {params: new HttpParams({fromString: 'cin='+cin})};
+    opts = {params: new HttpParams({fromString: 'cin='+cin+'&dispo='+dispo})};
     return this.http.get(this.UpdateCoursier,opts);
 
   }

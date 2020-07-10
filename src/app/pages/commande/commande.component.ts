@@ -116,7 +116,7 @@ export class CommandeComponent implements OnInit {
       this.NomClient = (document.getElementById("NomClient") as HTMLInputElement).value;
       let Qte = this.Quantite;
       let days: any = this.dateValue.getDate();
-      let month: any = this.dateValue.getMonth();
+      let month: any = this.dateValue.getMonth()+1;
       let year: any = this.dateValue.getFullYear();
       this.Date = year + "-" + month + "-" + days;
       C.idCommande = this.idcommande;

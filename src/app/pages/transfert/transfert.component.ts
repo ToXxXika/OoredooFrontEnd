@@ -134,6 +134,7 @@ export class TransfertComponent implements AfterViewInit {
            for (let i = 0; i < this.BPTable.length; i++) {
              let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
              this.Res = this.getCoordinates(Pos, Pos2);
+
              await new Promise(resolve => setTimeout(resolve, 1500));
              this.TableRes.push(this.Res);
            }
@@ -198,16 +199,15 @@ export class TransfertComponent implements AfterViewInit {
     T.referenceTransfert=(document.getElementById("RefTransfert")as HTMLInputElement).value;
     T.statut=0;
     let days:any= this.dateValue.getDay();
-    let month:any=this.dateValue.getMonth();
+    //add +1 to month cuz it starts from 0
+    let month:any=this.dateValue.getMonth()+1;
     let year:any=this.dateValue.getFullYear();
     T.dateTransfert= year+"-"+month+"-"+days ;
-    console.log(T);
-    console.log(TB);
-    let Operation = async ()=> {
 
+    let Operation = async ()=> {
       this.TransfertService.SaveTransfert(T).subscribe(response => {
         if (response) {
-          this.messageService.add({key: "SS", severity: 'success', summary: 'Demande de transfert', detail: 'Le transfert est En cours'});
+          this.messageService.add({key: "SS", severity: 'success', summary: 'Demande de transfert', detail: 'Le transfert est Encours'});
         } else {
           this.messageService.add({key: "SS", severity: 'danger', summary: 'Demande de transfert', detail: 'Le transfert est echoué'});
 

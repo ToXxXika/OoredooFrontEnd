@@ -10,7 +10,6 @@ import {MessageModule} from 'primeng/message';
 import {PanelModule} from 'primeng/panel';
 import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
-import {CoursierComponent} from '../../pages/coursier/coursier.component';
 import {CommandeComponent} from '../../pages/commande/commande.component';
 import {ProduitComponent} from '../../pages/produit/produit.component';
 import {TableModule} from 'primeng/table';
@@ -47,7 +46,6 @@ import {DetailcommandeComponent} from '../../pages/detailcommande/detailcommande
     ],
   declarations : [
     BoutiqueComponent,
-    CoursierComponent,
     CommandeComponent,
     ProduitComponent,
     DetailcommandeComponent

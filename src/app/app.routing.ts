@@ -8,6 +8,8 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import {BoutiqueLayoutComponent} from './layouts/boutique-layout/boutique-layout.component';
 import {RouteguardService} from './Services/routeguard.service';
 import {RouteguardAgentService} from './Services/routeguard-agent.service';
+import {CoursierLayoutComponent} from './layouts/coursier-layout/coursier-layout.component';
+import {RouteguardCoursierService} from './Services/routeguard-coursier.service';
 
 const routes: Routes =[
   {
@@ -44,7 +46,17 @@ const routes: Routes =[
         loadChildren: './layouts/boutique-layout/boutique-layout.module#BoutiqueLayoutModule'
       }
     ]
-  }
+  },{
+    path: '',
+    component: CoursierLayoutComponent,
+    canActivate:[RouteguardCoursierService],
+    children: [
+      {
+        path: '',
+        loadChildren: './layouts/coursier-layout/coursier-layout.module#CoursierLayoutModule'
+      }
+    ]
+  },
 ];
 
 @NgModule({

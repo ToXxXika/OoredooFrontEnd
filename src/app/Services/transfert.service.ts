@@ -16,9 +16,9 @@ export class TransfertService {
 
 
   constructor(private http: HttpClient) { }
-  public UpdateTransfer(REF:any){
+  public UpdateTransfer(REF:any,statut:any){
     let opts : {params: HttpParams};
-    opts = {params: new HttpParams({fromString:'REFT='+REF})};
+    opts = {params: new HttpParams({fromString:'REFT='+REF+'&statut='+statut})};
     return this.http.get(this.UrlUpdateTransfert,opts)
   }
   public SaveTransfert(T:Transfert):Observable<Transfert> {

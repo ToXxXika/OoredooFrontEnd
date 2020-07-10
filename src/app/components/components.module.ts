@@ -9,6 +9,7 @@ import {ButtonModule} from "primeng/button";
 import {TreeTableModule} from 'primeng/treetable';
 import {TableModule} from "primeng/table";
 import { BoutiqueSidebarComponent } from './boutique-sidebar/boutique-sidebar.component';
+import { CoursierSidebarComponent } from './coursier-sidebar/coursier-sidebar.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { BoutiqueSidebarComponent } from './boutique-sidebar/boutique-sidebar.co
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    BoutiqueSidebarComponent
+    BoutiqueSidebarComponent,
+    CoursierSidebarComponent
   ],
   exports: [
     FooterComponent,

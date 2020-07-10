@@ -43,7 +43,7 @@
             <td>{{T.referenceTransfert}}</td>
               <ng-container ngSwitch="{{T.statut}}">
             <td *ngSwitchCase="1"><p-message severity="success" text=" Terminé"></p-message></td>
-            <td *ngSwitchCase="0"><p-message severity="warn" text=" En Cours"></p-message></td>
+            <td *ngSwitchCase="0"><p-message severity="warn" text=" Encours"></p-message></td>
               </ng-container>
               <td><button pButton type="button" class="ui-button-secondary" (click)="showDetailsTransfert(T,'topright')" icon="pi pi-cog"></button></td>
             </tr>

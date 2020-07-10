@@ -26,25 +26,60 @@ export class CoursierComponent implements OnInit {
     }else {
       this.ProdService.getTransfertBycin(LoginComponent.P.cin).subscribe(Transferts => {
         this.Transfert = Transferts;
+        console.log(this.Transfert);
       })
     }
 
   }
   AcceptTransfert(event: Transfert){
-  /*  this.UserService.UpdateCoursierStatus('01234576').subscribe( Update =>{
-      this.messageService.add({
-        key: 'SS',
-        severity: 'success',
-        summary: 'Demande de transfert ',
-        detail: 'Utilisateur non disponible pendant loperation'
-      });
+    this.UserService.UpdateCoursierStatus(LoginComponent.P.cin,false).subscribe( Update =>{
+      console.log(Update);
+      if(Update) {
+        this.messageService.add({
+          key: 'SS',
+          severity: 'success',
+          summary: 'MISE A JOUR ',
+          detail: 'Mise a jour effectué'
+        });
+      }else {
+        this.messageService.add({
+          key: 'SS',
+          severity: 'warn',
+          summary: 'MISE A JOUR ',
+          detail: 'Mise a jour non effectué'
+        });
+      }
     },error =>   this.messageService.add({
       key: 'SS',
       severity: 'danger',
       summary: 'Demande de transfert',
       detail: error
-    }));*/
-    this.TransfertService.UpdateTransfer(event.referenceTransfert).subscribe(upTransfert =>{
+    }));
+    this.TransfertService.UpdateTransfer(event.referenceTransfert,1).subscribe(upTransfert =>{
+      console.log(upTransfert);
+      if(upTransfert === true){
+        this.messageService.add({
+          key: 'SS',
+          severity: 'success',
+          summary: 'Transfert MAJ ',
+          detail: 'Mise a jour du transfert effectué'
+        });
+      }else {
+        this.messageService.add({
+          key: 'SS',
+          severity: 'warn',
+          summary: 'Transfert MAJ',
+          detail: 'Mise a jour du transfert non effectué'
+        });
+      }
+
+    },error => {
+      this.messageService.add({
+        key: 'SS',
+        severity: 'danger',
+        summary: 'Transfert MAJ ',
+        detail: error
+      });
 
     });
 
