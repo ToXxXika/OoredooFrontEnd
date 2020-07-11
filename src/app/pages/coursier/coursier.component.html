@@ -1,3 +1,4 @@
+<p-toast key="SS" position="bottom-right"></p-toast>
 <p-table selectionMode="single" [(selection)]="selectedTransfert" responsive= false [value]="Transfert">
   <ng-template pTemplate="header">
     <tr>
@@ -5,7 +6,6 @@
       <th>Date Transfert</th>
       <th>BoutiqueDestinataire</th>
       <th>BoutiqueEmetteur</th>
-      <th>Estimation</th>
       <th>Action</th>
     </tr>
   </ng-template>
@@ -15,8 +15,8 @@
       <td>{{T.dateTransfert}}</td>
       <td>Ooredoo Lac 2 </td>
       <td>Ooredoo Tunis </td>
-      <td>TIME HERE</td>
-      <td><button pButton type="button" label="Confirmer"  (click)="AcceptTransfert(T)" class="ui-button-success"></button></td>
+      <td><button pButton type="button" label="Confirmer"  (click)="AcceptTransfert(T)" class="ui-button-success" [disabled]="Confirmer"></button>
+      <button pButton type="button" label="Demarrer"  (click)="StartTransfert()" class="ui-button-info"></button></td>
     </tr>
   </ng-template>
 </p-table>

@@ -3,7 +3,8 @@ import {CoursierComponent} from '../../pages/coursier/coursier.component';
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {CoursierLayoutsRoutes} from './coursier-layout.routing';
-import {ButtonModule} from 'primeng';
+import {ButtonModule, ToastModule} from 'primeng';
+import {FormsModule} from '@angular/forms';
 
 
 
@@ -11,7 +12,9 @@ import {ButtonModule} from 'primeng';
   imports: [
     RouterModule.forChild(CoursierLayoutsRoutes),
     TableModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule,
+    FormsModule
 
   ],
   declarations : [

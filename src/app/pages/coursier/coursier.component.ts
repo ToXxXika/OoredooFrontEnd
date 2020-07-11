@@ -17,6 +17,7 @@ export class CoursierComponent implements OnInit {
   Transfert: Transfert[] = [];
   selectedTransfert: Transfert;
   rowData: any;
+  Confirmer: boolean;
   constructor(private router: Router,private TransfertService: TransfertService,private messageService: MessageService,private ProdService: ProduitService,private UserService: InscriptionService) { }
 
   ngOnInit(): void {
@@ -29,32 +30,14 @@ export class CoursierComponent implements OnInit {
         console.log(this.Transfert);
       })
     }
+    this.Confirmer=true;
 
   }
+  //le Coursier confirme que La Boutique a recevoir le produit specifique en cliquant dans ce buttone ( avec Changement de Taille de  quantite disponible dans la boutique Destinataire
+  // a faire
+    //Suppression d'alert lors de l'arrivage de produit
+  //lehne lazemna nzidou Update 3le Stock de Produit 3and el Boutique li mchetlha el sel3a
   AcceptTransfert(event: Transfert){
-    this.UserService.UpdateCoursierStatus(LoginComponent.P.cin,false).subscribe( Update =>{
-      console.log(Update);
-      if(Update) {
-        this.messageService.add({
-          key: 'SS',
-          severity: 'success',
-          summary: 'MISE A JOUR ',
-          detail: 'Mise a jour effectué'
-        });
-      }else {
-        this.messageService.add({
-          key: 'SS',
-          severity: 'warn',
-          summary: 'MISE A JOUR ',
-          detail: 'Mise a jour non effectué'
-        });
-      }
-    },error =>   this.messageService.add({
-      key: 'SS',
-      severity: 'danger',
-      summary: 'Demande de transfert',
-      detail: error
-    }));
     this.TransfertService.UpdateTransfer(event.referenceTransfert,1).subscribe(upTransfert =>{
       console.log(upTransfert);
       if(upTransfert === true){
@@ -85,4 +68,31 @@ export class CoursierComponent implements OnInit {
 
   }
 
+  //le Coursier demarre le Transfert  Dans cette Fonction seulement le Statut de Coursier se change  (Disponibilité = false )
+  StartTransfert() {
+    this.UserService.UpdateCoursierStatus(LoginComponent.P.cin,false).subscribe( Update =>{
+      console.log(Update);
+      if(Update) {
+        this.messageService.add({
+          key: 'SS',
+          severity: 'success',
+          summary: 'Demarrage de Transfert',
+          detail: 'Coursier a commencé le Transfert'
+        });
+        this.Confirmer=false;
+      }else {
+        this.messageService.add({
+          key: 'SS',
+          severity: 'warn',
+          summary: 'Demarrage de Transfert',
+          detail: 'demarrage de transfert a echoué '
+        });
+      }
+    },error =>   this.messageService.add({
+      key: 'SS',
+      severity: 'danger',
+      summary: 'Demande de transfert',
+      detail: error
+    }));
+  }
 }
