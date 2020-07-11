@@ -10,7 +10,7 @@ import {Transfertboutique} from '../../models/transfertboutique';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {TestClass} from '../../models/TestClass';
 import {MessageService} from 'primeng';
-
+import {google}  from 'google-maps'
 @Component({
   selector: 'app-transfert',
   templateUrl: './transfert.component.html',
@@ -42,10 +42,39 @@ export class TransfertComponent implements AfterViewInit {
   BooutiqueDisDialog: any;
   DateDualog: any;
 
+
+
   constructor(private messageService: MessageService,private fb:FormBuilder,private DataTransfer: DataTransferService,private ProdService: ProduitService, private TransfertService: TransfertService, private PersonneService: InscriptionService) {
   }
 
+ /* SetStoreMarkers(Boutique1:any,Boutique2:any) {
 
+   let  map= new google.maps.Map(document.getElementById("map"));
+  this.ProdService.getBoutiqueById(Boutique1).subscribe(Res1=>{
+   let  T1 =this.ExtractionAltitude(Res1.localisation);
+    let marker = new google.maps.Marker({
+      position:{
+        lat:+T1[0],
+        lng:+T1[1]
+      },
+      map:map,
+      title:Res1.nomBoutique
+    });
+    marker.setMap(map);
+  }).unsubscribe();
+   this.ProdService.getBoutiqueById(Boutique2).subscribe(Res2=>{
+     let  T2 =this.ExtractionAltitude(Res2.localisation);
+     let marker = new google.maps.Marker({
+       position:{
+         lat:+T2[0],
+         lng:+T2[1]
+       },
+       map:map,
+       title:Res2.nomBoutique
+     });
+     marker.setMap(map);
+   })
+  }*/
   getRandomTransferRefernce(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -84,10 +113,12 @@ export class TransfertComponent implements AfterViewInit {
     this.CoursierDialog = row.cinC;
     this.BoutiqueEmDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouEmetteur'];
     this.BooutiqueDisDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouDestinataire'];
-    this.DateDualog=row.dateTransfert ;
+    // this.SetStoreMarkers(this.BoutiqueEmDialog,this.BooutiqueDisDialog);
 
+    this.DateDualog=row.dateTransfert ;
     this.position = position;
     this.displayposition = true;
+
   }
   GetDataFromDataTransferService(){
     this.DataTransfer.CurrentAlert.subscribe(message => {
@@ -243,9 +274,12 @@ export class TransfertComponent implements AfterViewInit {
       'DateT': new FormControl(null),
       'DropD': new FormControl(),
     });
+
   }
+
   ngAfterViewInit() {
     this.GetDataFromDataTransferService();
+
   }
 }
 

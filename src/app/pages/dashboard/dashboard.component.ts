@@ -11,6 +11,9 @@ import {
 import {ProduitService} from "../../Services/produit.service";
 import {InscriptionService} from "../../Services/inscription.service";
 import {MessageService} from "primeng/api";
+import {TransfertService} from '../../Services/transfert.service';
+import {CommandeService} from '../../Services/commande.service';
+import {DetailsCommande} from '../../models/DetailsCommande';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,23 +22,48 @@ import {MessageService} from "primeng/api";
   providers :[MessageService]
 })
 export class DashboardComponent implements OnInit {
-
+  public datachart: any
   public datasets: any;
-  public proddatasets : any
-  public Widthproddatasets : any
-  public heightproddatasets : any
   public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
+  public PriceTable : any[]=[];
+  public Productname : any[]=[];
   private UserNumbers : number ;
   private ProdNumbers : number ;
   private AlertNumbers: number ;
-  constructor(private ProduitService : ProduitService,private InscriptionService: InscriptionService,private  Msg: MessageService) { }
+  private TransfertNumbers : number ;
+  private Commandes: DetailsCommande[]=[];
+  constructor(private Commande: CommandeService,private ProduitService : ProduitService,private InscriptionService: InscriptionService,private  Msg: MessageService,private Transfert: TransfertService) {
+   this.ProduitService.recupererProduit().subscribe(ProdData=>{
+     for (let i =0 ;i<ProdData.length;i++){
+       this.PriceTable.push(ProdData[i].prix)
+       this.Productname.push(ProdData[i].libelle+" "+ProdData[i].marque);
+     }
+     console.log(this.PriceTable);
+     console.log(this.Productname);
+      this.datachart={
+       labels: this.Productname,
+        datasets:[
+          {
+            label: 'Prix Produit',
+            data: this.PriceTable,
+            fill: false ,
+            borderColor: '#4bc0c0'
+          }
+        ]
+      }
+    })
+
+  }
 
 
 
   ngOnInit() {
+    this.Commande.GetCommandes().subscribe(DetailCommandeData =>{
+      this.Commandes = DetailCommandeData ;
+    })
+    this.Transfert.recupererTransfert().subscribe(TransfertData =>{
+      this.TransfertNumbers = TransfertData.length ;
+    })
 
     this.InscriptionService.Utilisateurs().subscribe(UserData =>{
       this.UserNumbers = UserData.length ;
@@ -47,41 +75,8 @@ export class DashboardComponent implements OnInit {
     this.ProduitService.recupererAlert().subscribe( AlertData => {
       this.AlertNumbers = AlertData.length;
     })
-    //END OF BLOCK
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
 
-
-    var chartOrders = document.getElementById('chart-orders');
-
-    parseOptions(Chart, chartOptions());
-
-
-    var ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
-    });
-
-    var chartSales = document.getElementById('chart-sales');
-
-    this.salesChart = new Chart(chartSales, {
-			type: 'line',
-			options: chartExample1.options,
-			data: chartExample1.data
-		});
   }
 
-
-
-
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
-  }
 
 }

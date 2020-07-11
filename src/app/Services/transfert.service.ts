@@ -14,7 +14,6 @@ export class TransfertService {
   private UrlSaveTransfertBoutique = 'http://localhost:8080/transfertboutique/SaveTransfertBoutique';
   private UrlUpdateTransfert = 'http://localhost:8080/transfert/updateTransfertStatus';
 
-
   constructor(private http: HttpClient) { }
   public UpdateTransfer(REF:any,statut:any){
     let opts : {params: HttpParams};

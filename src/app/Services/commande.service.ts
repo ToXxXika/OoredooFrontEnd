@@ -9,6 +9,7 @@ import {DetailsCommande} from '../models/DetailsCommande';
 export class CommandeService {
     private UrlSaveCommande ='http://localhost:8080/Commande/AddCommande';
     private UrlSaveDetailCommande = 'http://localhost:8080/Commande/AddDetailCommande';
+    private UrlgetCommandes = 'http://localhost:8080/Commande/getDetailsC';
   constructor(private http:HttpClient) { }
 
   public SaveCommande(T:Commande){
@@ -16,5 +17,8 @@ export class CommandeService {
   }
   public SaveDetailCommande(DC:DetailsCommande){
     return this.http.post<DetailsCommande>(this.UrlSaveDetailCommande,DC);
+  }
+  public GetCommandes(){
+    return this.http.get<DetailsCommande[]>(this.UrlgetCommandes);
   }
 }
