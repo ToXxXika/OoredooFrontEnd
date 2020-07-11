@@ -5,6 +5,7 @@ import {boutiqueProduit} from '../../models/boutiqueProduit';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Alert} from '../../models/alert';
 import {Produit} from '../../models/produit';
+import {LoginComponent} from '../login/login.component';
 
 @Component({
   selector: 'app-produit',
@@ -34,7 +35,7 @@ export class ProduitComponent implements OnInit {
     this.TypeProdDropdown.push({label:"Liste des Types", value:""});
     this.MarqueDropdown.push({label: "Liste des Marques", value: ""});
     this.LibelleProdDropdown.push({label:"Liste des Libéllés",value:""});
-    
+
     this.ProdServ.getType().subscribe(TypeData => {
       for (let i = 0; i < TypeData.length; i++) {
         this.TypeProdDropdown.push({label: TypeData[i].description, value: TypeData[i].idType});
@@ -72,7 +73,7 @@ export class ProduitComponent implements OnInit {
     });
    //=================================================
     this.LoadLists();
-          this.ProdServ.getSpecifiedProduct(5).subscribe(Pr =>{
+          this.ProdServ.getSpecifiedProduct(LoginComponent.P.agentcommercialByCin.idbou).subscribe(Pr =>{
             this.Produits = Pr ;
             console.log(this.Produits)
           });
@@ -87,7 +88,7 @@ export class ProduitComponent implements OnInit {
     const InputType = this.userform.get('Type').value;
     const InputLibelle = this.userform.get('Libelle').value;
     //switch with real values
-    this.T.idBoutique=2;
+    this.T.idBoutique=11
     this.T.marque=InputMarque;
     this.T.type=InputType;
     this.T.libelle= InputLibelle ;

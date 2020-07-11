@@ -19,7 +19,6 @@ import {google}  from 'google-maps'
 })
 export class TransfertComponent implements AfterViewInit {
   Res : any = " ";
-  MinimumDistance :any="";
   TransfertTab: any[] = [];
   CoursierTab: any[] = [];
   Alert:TestClass = new TestClass() ;
@@ -41,6 +40,8 @@ export class TransfertComponent implements AfterViewInit {
   BoutiqueEmDialog: any;
   BooutiqueDisDialog: any;
   DateDualog: any;
+  minimumDistance = +1e19;
+  BoutiqueFinale = "";
 
 
 
@@ -176,10 +177,15 @@ export class TransfertComponent implements AfterViewInit {
          resolve(loop2());
        }).then((value => {
          value = this.TableRes;
-         console.log("Hello");
+         console.log(this.TableRes);
          for(let i = 0 ; i<this.BPTable.length;i++){
-           console.log(this.TableRes[i] +" " +this.BPTable[i].nomBoutique);
+          if(this.minimumDistance>this.TableRes[i]){
+            this.minimumDistance= this.TableRes[i];
+            this.BoutiqueFinale = this.BPTable[i].nomBoutique;
+          }
+
          }
+         (document.getElementById("BoutiqueEmetteur")as HTMLOutputElement).value = this.BoutiqueFinale;
        }));
       }
       loop();
