@@ -38,7 +38,6 @@ import { CoursierLayoutComponent } from './layouts/coursier-layout/coursier-layo
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    TestToastComponent,
     BoutiqueLayoutComponent,
     CoursierLayoutComponent,
 

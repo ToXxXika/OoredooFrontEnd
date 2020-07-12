@@ -24,14 +24,32 @@ export class ProduitService {
   private UrlGetDescriptionbyType='http://localhost:8080/Produit/FindDesc';
   private UrlUpdateBoutiqueProduit = 'http://localhost:8080/BoutiqueProduit/updateBoutiqueProduit';
   private UrlgetTransfertByCin= 'http://localhost:8080/transfert/getTransfertByCoursier';
+  private UrlDeleteUrl ='http://localhost:8080/Alert/deleteAlert';
+ // ==============================================================
+  private UrlGetTypeByMarque='http://localhost:8080/Produit/getTypeByMarque';
+  private UrlgetLibelle='http://localhost:8080/Produit/geTLibelle';
 
+
+  public getLibelle(marque:any,type:any){
+    let opts : {params : HttpParams};
+    opts = {params : new HttpParams({fromString:'marque='+marque+'&type='+type})};
+    return this.http.get<string[]>(this.UrlgetLibelle,opts)
+  }
   public UpdateBoutiqueProduitStock(Qte:any,idbou:any,refprod:any){
     let opts : {params : HttpParams};
     opts = {params : new HttpParams({fromString:'nbr='+Qte+'&idbou='+idbou+'&refprod='+refprod})};
     return this.http.get(this.UrlUpdateBoutiqueProduit,opts)
   }
-
-
+ public deleteAlert(id:any){
+    let opts : {params : HttpParams};
+    opts = { params : new HttpParams({fromString:'id='+id})};
+    return this.http.get(this.UrlDeleteUrl,opts);
+ }
+ public getTypeByMarque(marque: any){
+   let opts : {params : HttpParams};
+   opts = { params : new HttpParams({fromString:'marque='+marque})};
+   return this.http.get<any[]>(this.UrlGetTypeByMarque,opts);
+ }
   public getTransfertBycin(user:any){
     let opts : {params : HttpParams};
     opts = {params : new HttpParams({fromString:'cin='+user})};
@@ -40,7 +58,7 @@ export class ProduitService {
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
   }
-  public recupererBoutiqueProduit():Observable<any>{
+  public recupererBoutiqueProduit(str):Observable<any>{
     return this.http.get<any[]>(this.UrlgetBoutProd);
   }
   public getType(){
@@ -49,7 +67,7 @@ export class ProduitService {
   public getDescriptionByType(type:number){
     let opts : { params : HttpParams};
     opts = { params : new HttpParams({fromString: 'type='+type})};
-    return this.http.get<any>(this.UrlGetDescriptionbyType,opts)
+    return this.http.get<Typeprod[]>(this.UrlGetDescriptionbyType,opts)
   }
   public recupererAlert(){
     return this.http.get<Alert[]>(this.UrlGetAllerts);

@@ -6,6 +6,7 @@ import { AuthLayoutRoutes } from './auth-layout.routing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../../pages/login/login.component';
 import {ToastModule} from 'primeng/toast';
+import {TestToastComponent} from '../../test-toast/test-toast.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {ToastModule} from 'primeng/toast';
         // NgbModule
     ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    TestToastComponent
   ]
 })
 export class AuthLayoutModule { }

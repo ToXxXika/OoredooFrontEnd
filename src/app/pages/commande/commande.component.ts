@@ -32,44 +32,22 @@ export class CommandeComponent implements OnInit {
   CommandeForm: FormGroup;
   dateValue: Date;
   Quantite: number;
-
+  RefProd:any;
 
   constructor(private DataTransfer: DataTransferService,private Router: Router,private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
   }
-  loadDropdowns(){
-    //get boutique from Agentcommercial Connecté
-    this.ProdServ.getSpecifiedProduct(5).subscribe( data =>{
-      console.log(data);
-      for (let i = 0; i < data.length; i++) {
-        if(this.TypeFiltre.indexOf(data[i]["3"])== -1){
-          this.TypeFiltre.push(data[i]["3"]);
-        }
-        //filtrage de marque pour eviter la redondance
-        if (this.MarqueFiltre.indexOf(data[i]["1"]) == -1) {
-          this.MarqueFiltre.push(data[i]["1"]);
-        }
-        if(this.LibelleFiltre.indexOf(data[i]["2"]) == -1){
-          this.LibelleFiltre.push(data[i]["2"]);
-        }
-      }
-      for(let i=0;i<this.TypeFiltre.length;i++){
-        this.ProdServ.getDescriptionByType(this.TypeFiltre[i]).subscribe( Desc =>{
-          console.log(Desc.description);
-          this.TypeProdDropdown.push({label:Desc.description , value: Desc.idType});
-        });
-      }
-      for (let j = 0; j < this.MarqueFiltre.length; j++) {
-        this.MarqueDropdown.push({label: this.MarqueFiltre[j], value: this.MarqueFiltre[j]});
-      }
-      for (let k =0; k<this.LibelleFiltre.length;k++){
-        this.LibelleProdDropdown.push({label:this.LibelleFiltre[k],value:this.LibelleFiltre[k]});
-      }
-    })
-  }
+
   @Output() Obj = new EventEmitter<DetailsCommande>();
+  displayDialog: boolean;
+  MarqueModel: any;
+  TypeModel: any;
+  TypeDisable: any;
+  LibelleModel: any;
+  LibelleDisable: any;
 
   ngOnInit(): void {
-    this.loadDropdowns();
+
+    this.displayDialog=true;
     this.items = [
       {label: 'Chercher un produit', icon: 'pi pi-table', command: () => {
         this.router.navigateByUrl("/produits");
@@ -79,13 +57,7 @@ export class CommandeComponent implements OnInit {
         }},
 
     ];
-    this.CommandeForm = this.fb.group({
-    'Marque': new FormControl(''),
-      'Type': new FormControl(''),
-      'Libelle': new FormControl(''),
-      'DateT': new FormControl(''),
-      'Qte': new FormControl('')
-    });
+
     (document.getElementById("idcommande")as HTMLOutputElement).value = "IDC" + this.getRandomCommandID(10000,100000);
   }
   getRandomCommandID(min, max) {
@@ -104,12 +76,6 @@ export class CommandeComponent implements OnInit {
     console.log(this.dateValue);
     let C: Commande = new Commande();
     let DC: DetailsCommande = new DetailsCommande();
-    this.Marque = this.CommandeForm.get('Marque').value;
-    this.Type = this.CommandeForm.get('Type').value;
-    this.Libelle = this.CommandeForm.get('Libelle').value;
-    this.ProdServ.getProdByMLT(this.Libelle,this.Marque,this.Type).subscribe(P=> {
-      let RefProd:any = P[0]['referenceProduit'];
-      console.log(RefProd);
       this.idcommande = (document.getElementById("idcommande") as HTMLInputElement).value;
       this.cininput = (document.getElementById("cininput") as HTMLInputElement).value;
       this.PrenomClient = (document.getElementById("PrenomClient") as HTMLInputElement).value;
@@ -126,7 +92,7 @@ export class CommandeComponent implements OnInit {
       DC.nomclient = this.NomClient;
       DC.prenomclient = this.PrenomClient;
       DC.qtecom = Qte;
-      DC.reprod = RefProd;
+      DC.reprod = this.RefProd;
       let CommandSave = async () => {
         this.CommServ.SaveCommande(C).subscribe(response => {
           if (response) {
@@ -158,7 +124,7 @@ export class CommandeComponent implements OnInit {
               summary: 'Insertion Details Commande ',
               detail: 'Ajout Details Commande est terminée '
             });
-            this.ProdServ.UpdateBoutiqueProduitStock(Qte, 5, RefProd).subscribe(answer => {
+            this.ProdServ.UpdateBoutiqueProduitStock(Qte, 5, this.RefProd).subscribe(answer => {
               if (answer) {
                 this.messageService.add({
                   key: 'SS',
@@ -209,9 +175,64 @@ export class CommandeComponent implements OnInit {
         })
       }
       CommandSave();
+
+  }
+
+  ChangeMarqueDropdown(MarqueModel: any) {
+    this.TypeProdDropdown.length=0;
+    this.TypeDisable= false ;
+    this.ProdServ.getTypeByMarque(MarqueModel).subscribe(dataType=>{
+      for(let x of dataType){
+        if (this.TypeFiltre.indexOf(x) == -1) {
+          this.TypeFiltre.push(x);
+        }
+      }
+      for (let X of this.TypeFiltre) {
+        console.log(' im in Second Loop');
+        console.log(X);
+        this.ProdServ.getDescriptionByType(X).subscribe(DescType =>{
+          console.log(DescType)
+          this.TypeProdDropdown.push({label:DescType['description'],value:X});
+        })
+      }
+    });
+  }
+
+  ChangeTypeMarqueDropdowns(MarqueModel: any, TypeModel: any) {
+    this.LibelleProdDropdown.length=0;
+    this.LibelleDisable= false;
+    this.ProdServ.getLibelle(MarqueModel, TypeModel).subscribe(LibelleData=>{
+      for(let x of LibelleData){
+        if (this.LibelleFiltre.indexOf(x) == -1) {
+          this.LibelleFiltre.push(x);
+        }
+      }
+      for(let description of this.LibelleFiltre){
+        this.LibelleProdDropdown.push({label:description,value:description});
+      }
+    })
+  }
+
+  Rechercher() {
+    this.ProdServ.getProdByMLT(this.LibelleModel,this.MarqueModel,this.TypeModel).subscribe(Product=>{
+      if(Product !== null){
+        this.messageService.add({
+          key: 'SS',
+          severity: 'success',
+          summary: 'Recherche de Produit',
+          detail: 'Produit Trouvé est Valide',
+          life: 4000,
+        });
+         this.RefProd = Product['referenceProduit'];
+         this.Marque= this.MarqueModel;
+         this.Libelle= this.LibelleModel;
+         this.Type= this.TypeModel;
+
+      }
     })
   }
 }
+
 
 
 

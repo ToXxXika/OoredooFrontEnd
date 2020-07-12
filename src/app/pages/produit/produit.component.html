@@ -28,26 +28,26 @@
 </p-table>
 <p-dialog header="Demande de Transfert d'un Produit" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '700px'}">
   <div class="p-grid ui-fluid" >
-   <form [formGroup]="userform">
+   <form>
     <div class="p-col-4">
       <label for="M">Marque</label>
     </div>
     <div class="p-col-8">
-      <p-dropdown [options]="MarqueDropdown" id="M" formControlName="Marque" ></p-dropdown>
+      <p-dropdown [options]="MarqueDropdown" id="M" [(ngModel)]="MarqueModel" (onChange)="ChangeMarqueDropdown(MarqueModel)" [ngModelOptions]="{standalone: true}"></p-dropdown>
 
     </div>
     <div class="p-col-4">
       <label for="brand">Type</label>
     </div>
     <div class="p-col-8">
-      <p-dropdown [options]="TypeProdDropdown" id="brand" formControlName="Type"></p-dropdown>
+      <p-dropdown [options]="TypeProdDropdown" id="brand" [(ngModel)]="TypeModel" [disabled]="TypeDisable" (onChange)="ChangeTypeMarqueDropdowns(MarqueModel,TypeModel)" [ngModelOptions]="{standalone: true}"></p-dropdown>
 
     </div>
     <div class="p-col-4">
       <label for="Libelle">Libelle</label>
     </div>
     <div class="p-col-8">
-      <p-dropdown [options]="LibelleProdDropdown" id="Libelle" formControlName="Libelle"></p-dropdown>
+      <p-dropdown [options]="LibelleProdDropdown" id="Libelle" [(ngModel)]="LibelleModel" [disabled]="LibelleDisable"[ngModelOptions]="{standalone: true}"></p-dropdown>
 
     </div>
    </form>

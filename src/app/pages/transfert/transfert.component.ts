@@ -42,15 +42,17 @@ export class TransfertComponent implements AfterViewInit {
   DateDualog: any;
   minimumDistance = +1e19;
   BoutiqueFinale = "";
+  BoutiqueFinaleID:any ;
 
 
 
   constructor(private messageService: MessageService,private fb:FormBuilder,private DataTransfer: DataTransferService,private ProdService: ProduitService, private TransfertService: TransfertService, private PersonneService: InscriptionService) {
   }
 
- /* SetStoreMarkers(Boutique1:any,Boutique2:any) {
+ /*SetStoreMarkers(Boutique1:any,Boutique2:any) {
 
    let  map= new google.maps.Map(document.getElementById("map"));
+
   this.ProdService.getBoutiqueById(Boutique1).subscribe(Res1=>{
    let  T1 =this.ExtractionAltitude(Res1.localisation);
     let marker = new google.maps.Marker({
@@ -75,7 +77,9 @@ export class TransfertComponent implements AfterViewInit {
      });
      marker.setMap(map);
    })
-  }*/
+  }
+
+  */
   getRandomTransferRefernce(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -114,8 +118,6 @@ export class TransfertComponent implements AfterViewInit {
     this.CoursierDialog = row.cinC;
     this.BoutiqueEmDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouEmetteur'];
     this.BooutiqueDisDialog = row.transfertboutiquesByReferenceTransfert[0]['idBouDestinataire'];
-    // this.SetStoreMarkers(this.BoutiqueEmDialog,this.BooutiqueDisDialog);
-
     this.DateDualog=row.dateTransfert ;
     this.position = position;
     this.displayposition = true;
@@ -151,6 +153,7 @@ export class TransfertComponent implements AfterViewInit {
      this.ProdService.getProdByMLT(this.Alert.libelle,this.Alert.marque,this.Alert.type).subscribe(Prod =>{
        console.log(Prod);
        let loop2 = async() =>{
+         //initialize Tables Here
          this.TableRes = [];
          this.TableRes.length = 0 ;
          this.BPTable.length = 0 ;
@@ -160,9 +163,11 @@ export class TransfertComponent implements AfterViewInit {
            });
          }
          await new Promise(resolve => {setTimeout(resolve,500)});
+         //Test if we don't The Product specified in the Alert
          if(this.BPTable.length == 0){
            this.messageService.add({key:"SS",severity:'warn',summary:'Manque de Produit',detail:'Ce Produit est introuvable dans nos Boutiques '})
          }else {
+           //here we calculate Destination and push results in TableRes  . The Reason we've used Promise
            for (let i = 0; i < this.BPTable.length; i++) {
              let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
              this.Res = this.getCoordinates(Pos, Pos2);
@@ -179,11 +184,12 @@ export class TransfertComponent implements AfterViewInit {
          value = this.TableRes;
          console.log(this.TableRes);
          for(let i = 0 ; i<this.BPTable.length;i++){
+           //Find the Closest Store to us
           if(this.minimumDistance>this.TableRes[i]){
             this.minimumDistance= this.TableRes[i];
             this.BoutiqueFinale = this.BPTable[i].nomBoutique;
+            this.BoutiqueFinaleID = this.BPTable[i].idBoutique;
           }
-
          }
          (document.getElementById("BoutiqueEmetteur")as HTMLOutputElement).value = this.BoutiqueFinale;
        }));
@@ -191,6 +197,7 @@ export class TransfertComponent implements AfterViewInit {
       loop();
      });
   }
+  //methode de l'api MapQuest
   getCoordinates(Pos1:any,Pos2:any):any{
     const tab = '{\n' +
       '  locations: [\n' +
@@ -231,7 +238,7 @@ export class TransfertComponent implements AfterViewInit {
     let TB: Transfertboutique = new Transfertboutique();
     T.cinC= this.TransfertForm.get('DropD').value;
     TB.idBouDestinataire=this.idBou;
-    TB.idBouEmetteur=2;
+    TB.idBouEmetteur=this.BoutiqueFinaleID;
     TB.refTran=(document.getElementById("RefTransfert")as HTMLInputElement).value;
     T.referenceTransfert=(document.getElementById("RefTransfert")as HTMLInputElement).value;
     T.statut=0;
@@ -245,6 +252,7 @@ export class TransfertComponent implements AfterViewInit {
       this.TransfertService.SaveTransfert(T).subscribe(response => {
         if (response) {
           this.messageService.add({key: "SS", severity: 'success', summary: 'Demande de transfert', detail: 'Le transfert est Encours'});
+
         } else {
           this.messageService.add({key: "SS", severity: 'danger', summary: 'Demande de transfert', detail: 'Le transfert est echoué'});
 
@@ -258,6 +266,7 @@ export class TransfertComponent implements AfterViewInit {
       this.TransfertService.SaveTransfertBoutique(TB).subscribe(response =>{
         if(response){
           this.messageService.add({key:"SS",severity:'success',summary:'Détails',detail:'tous les operations sont terminés'});
+
         }else {
           this.messageService.add({key:"SS",severity:'info',summary:'Détails',detail:'Insertion dans la table boutiqueProduit a echouée'});
 
@@ -266,13 +275,17 @@ export class TransfertComponent implements AfterViewInit {
         this.messageService.add({key:"SS",severity:'danger',summary:'Détails',detail:'Un erreur est survenue dans la table BoutiqueProduit'+ error});
 
       });
+      this.ProdService.deleteAlert(this.idAlert).subscribe(response =>{
+        if(response){
+          this.messageService.add({key:"SS",severity:'success',summary:'Détails',detail:'Alerte Supprimé'});
+        }
+      },error => {
+        this.messageService.add({key:"SS",severity:'danger',summary:'Détails',detail:error});
+
+      })
     }
      Operation();
        }
-
-
-
-
   ngOnInit(): void {
     this.LoadCoursiers();
     this.RecuperationTransfert();
