@@ -3,7 +3,6 @@ import {InscriptionService} from "../../Services/inscription.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
-import {Personne} from '../../models/personne';
 import {StaticPersonne} from '../../models/StaticPersonne';
 
 @Component({
@@ -31,7 +30,7 @@ import {StaticPersonne} from '../../models/StaticPersonne';
     `],
   providers: [MessageService]
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   private CookieCinValue: string ;
   private CookiePasswordValue: string ; // need to fix Cookies Configuration
   static P:StaticPersonne = new StaticPersonne();
@@ -123,9 +122,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     }
   }
-
-
-
   //Pour la verification des Champs du formulaire
   CheckInputs(username:any,motdepasse: any):boolean{
     if((username.length==0)||(motdepasse.length==0)){
@@ -149,9 +145,6 @@ export class LoginComponent implements OnInit, OnDestroy {
      localStorage.clear();
     this.CookieCinValue = this.cookieService.get('CIN');
     this.CookiePasswordValue = this.cookieService.get('motdepasse');
-  }
-  ngOnDestroy() {
-    localStorage.clear();
   }
 
 }

@@ -18,6 +18,7 @@ export class UserProfileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //change me
     this.Nom=LoginComponent.P.nom;
     this.Prenom=LoginComponent.P.prenom;
     this.Mail=localStorage.getItem("MailLocal");

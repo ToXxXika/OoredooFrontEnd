@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild,OnDestroy} from '@angular/core';
 import {MessageService, SelectItem} from 'primeng/api';
 import {ProduitService} from '../../Services/produit.service';
 import {boutiqueProduit} from '../../models/boutiqueProduit';
@@ -13,7 +13,7 @@ import {LoginComponent} from '../login/login.component';
   styleUrls: ['./produit.component.css'],
   providers : [MessageService]
 })
-export class ProduitComponent implements OnInit {
+export class ProduitComponent implements OnInit{
   Produits: Produit[] = [];
   cols: any[];
   TypeProdDropdown: any[] = [];
@@ -77,6 +77,9 @@ export class ProduitComponent implements OnInit {
   showDialogToAdd() {
     this.displayDialog = true ;
   }
+/*  ngOnDestroy() {
+    localStorage.clear();
+  }*/
 
   Confirmer() {
     const InputMarque =this.MarqueModel;
@@ -134,4 +137,5 @@ export class ProduitComponent implements OnInit {
       }
     })
   }
+
 }
