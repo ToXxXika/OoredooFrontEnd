@@ -48,6 +48,15 @@ export class LoginComponent implements OnInit, OnDestroy {
        case 'KeyMail':{
          return 'MailLocal';
        }
+       case 'KeyBoutique':{
+         return  'BoutiqueLocal';
+       }
+       case 'KeyCin':{
+         return 'CinLocal';
+       }
+       case 'KeyTag':{
+         return  'Localuser';
+       }
        default : alert('KeyNotFound');
        break;
      }
@@ -71,12 +80,20 @@ export class LoginComponent implements OnInit, OnDestroy {
                    RoleGuard ="Admin";
                     LoginComponent.P.Verification(data,true);
                     localStorage.setItem("Role",RoleGuard)
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
+                    localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
+                    localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
+
                    this.router.navigateByUrl('/dashboard');
                    break;
                  }
                  case 'Coursier': {
                    RoleGuard="Coursier";
                    LoginComponent.P.Verification(data,true);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
+
                    localStorage.setItem("Role",RoleGuard)
                    this.router.navigateByUrl('/coursier');
                    break;
@@ -84,6 +101,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                  case 'AgentCommercial': {
                    RoleGuard="AgentCommercial";
                    LoginComponent.P.Verification(data,true);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyBoutique'),data['agentcommercialByCin'].idbou);
+                   localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
+
                    localStorage.setItem("Role",RoleGuard)
                    this.router.navigateByUrl('/produits');
                    break;
@@ -129,7 +151,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.CookiePasswordValue = this.cookieService.get('motdepasse');
   }
   ngOnDestroy() {
-   // localStorage.clear();
+    localStorage.clear();
   }
 
 }

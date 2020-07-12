@@ -30,28 +30,28 @@
      </span>
      <br>
      <span class="ui-float-label">
-       <input id="MD" pInputText [(ngModel)]="Marque">
+       <input id="MD" pInputText [(ngModel)]="Marque" [ngModelOptions]="{standalone: true}">
     <label for="MD">Marque Produit</label>
      </span>
      <br>
      <span class="ui-float-label">
-       <input id="TPD"  [(ngModel)]="Type" >
+       <input id="TPD" pInputText [(ngModel)]="Type" [ngModelOptions]="{standalone: true}" >
     <label for="TPD">Type Produit</label>
        </span>
      <br>
      <span class="ui-float-label">
-       <input id="LPD"  pInputText [(ngModel)]="Libelle">
+       <input id="LPD"  pInputText [(ngModel)]="Libelle" [ngModelOptions]="{standalone: true}">
     <label for="LPD">Libelle Produit</label>
       </span>
      <br>
      <!-- change with NbrDisponible de produits dans ce boutique -->
      <span class="ui-float-label">
-     <p-inputNumber   [(ngModel)]="Quantite" formControlName="Qte" mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
+     <p-inputNumber   [(ngModel)]="Quantite"  [ngModelOptions]="{standalone: true}" mode="decimal" [showButtons]="true"  id="QteP" [min]="1" [max]="10"></p-inputNumber>
        <label for="QteP"></label>
        </span>
      <br>
      <span class="ui-float-label">
-            <p-calendar id="T" [(ngModel)]="dateValue" formControlName="DateT" showButtonBar="true" size="100"  dateFormat="dd/mm/yy" ></p-calendar>
+            <p-calendar id="T" [(ngModel)]="dateValue"  showButtonBar="true" size="100"  dateFormat="dd/mm/yy" [ngModelOptions]="{standalone: true}"></p-calendar>
              <label for="T">DateCommande</label>
            </span>
    </div>
@@ -61,7 +61,7 @@
   </p-footer>
 </p-panel>
 <!------------------------------------------------------------------------->
-<p-dialog header="Demande de Transfert d'un Produit" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '700px'}">
+<p-dialog header="Verification du Produit" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '700px'}">
   <div class="p-grid ui-fluid" >
     <form>
       <div class="p-col-4">
@@ -91,5 +91,25 @@
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton icon="pi pi-check" (click)="Rechercher()" label="Chercher le boutique "></button>
     </div>
+  </p-footer>
+</p-dialog>
+<!----------------------------------------------------------->
+<p-dialog header="Liste des boutiques ayant ce produit" [(visible)]="displayDialog1" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true"   [style]="{width: '500px'}">
+ <p-table id="Cadre" [value]="TableBoutique" >
+   <ng-template pTemplate="header">
+     <tr>
+     <th>NomBoutique</th>
+     <th>Disponibilité</th>
+     </tr>
+   </ng-template>
+   <ng-template pTemplate="body" let-T>
+     <tr>
+       <td>{{T}}</td>
+       <td style="color: #00f7b5">Disponible</td>
+     </tr>
+   </ng-template>
+ </p-table>
+  <p-footer>
+    <button pButton class="ui-button-rounded" label="PDF" (click)="pdf()"></button>
   </p-footer>
 </p-dialog>

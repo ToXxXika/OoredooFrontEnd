@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DataTransferService} from '../../Services/data-transfer.service';
 import {TestClass} from '../../models/TestClass';
+import {LoginComponent} from '../login/login.component';
+import * as html2pdf from 'html2pdf.js';
 
 @Component({
   selector: 'app-commande',
@@ -29,11 +31,10 @@ export class CommandeComponent implements OnInit {
   NomClient: string ;
   PrenomClient: string ;
   Marque:any ; Type:any;Libelle:any;Date: any ;
-  CommandeForm: FormGroup;
   dateValue: Date;
   Quantite: number;
   RefProd:any;
-
+  TableBoutique:any[]=[];
   constructor(private DataTransfer: DataTransferService,private Router: Router,private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
   }
 
@@ -44,10 +45,14 @@ export class CommandeComponent implements OnInit {
   TypeDisable: any;
   LibelleModel: any;
   LibelleDisable: any;
+  displayDialog1: boolean;
 
   ngOnInit(): void {
-
+    this.LoadLists();
+    this.displayDialog1=false;
     this.displayDialog=true;
+    this.TypeDisable=true ;
+    this.LibelleDisable=true ;
     this.items = [
       {label: 'Chercher un produit', icon: 'pi pi-table', command: () => {
         this.router.navigateByUrl("/produits");
@@ -71,7 +76,22 @@ export class CommandeComponent implements OnInit {
     this.PrenomClient="";
     this.idcommande="";
   }
-
+  LoadLists() {
+    this.TypeProdDropdown.push({label:"Liste des Types", value:""});
+    this.MarqueDropdown.push({label: "Liste des Marques", value: ""});
+    this.LibelleProdDropdown.push({label:"Liste des Libéllés",value:""});
+    this.ProdServ.recupererProduit().subscribe(data => {
+      for (let i = 0; i < data.length; i++) {
+        //filtrage de marque pour eviter la redondance
+        if (this.MarqueFiltre.indexOf(data[i].marque) == -1) {
+          this.MarqueFiltre.push(data[i].marque);
+        }
+      }
+      for (let j = 0; j < this.MarqueFiltre.length; j++) {
+        this.MarqueDropdown.push({label: this.MarqueFiltre[j], value: this.MarqueFiltre[j]});
+      }
+    });
+  }
   AddCommande() {
     console.log(this.dateValue);
     let C: Commande = new Commande();
@@ -124,7 +144,7 @@ export class CommandeComponent implements OnInit {
               summary: 'Insertion Details Commande ',
               detail: 'Ajout Details Commande est terminée '
             });
-            this.ProdServ.UpdateBoutiqueProduitStock(Qte, 5, this.RefProd).subscribe(answer => {
+            this.ProdServ.UpdateBoutiqueProduitStock(Qte, 3, this.RefProd).subscribe(answer => {
               if (answer) {
                 this.messageService.add({
                   key: 'SS',
@@ -188,8 +208,7 @@ export class CommandeComponent implements OnInit {
         }
       }
       for (let X of this.TypeFiltre) {
-        console.log(' im in Second Loop');
-        console.log(X);
+
         this.ProdServ.getDescriptionByType(X).subscribe(DescType =>{
           console.log(DescType)
           this.TypeProdDropdown.push({label:DescType['description'],value:X});
@@ -220,16 +239,52 @@ export class CommandeComponent implements OnInit {
           key: 'SS',
           severity: 'success',
           summary: 'Recherche de Produit',
-          detail: 'Produit Trouvé est Valide',
+          detail: 'Produit est Valide dans la base de données ',
           life: 4000,
         });
-         this.RefProd = Product['referenceProduit'];
-         this.Marque= this.MarqueModel;
-         this.Libelle= this.LibelleModel;
-         this.Type= this.TypeModel;
-
+        this.ProdServ.getSpecifiedProduct(3).subscribe(dataP=>{
+          for(let BP of dataP){
+            if(BP['0']=== Product['referenceProduit']){
+              this.messageService.add({
+                key: 'SS',
+                severity: 'success',
+                summary: 'Recherche de Produit',
+                detail: 'Produit est trouvé dans notre Boutique',
+                life: 4000,
+              });
+              this.RefProd = Product['referenceProduit'];
+              this.Marque= this.MarqueModel;
+              this.Libelle= this.LibelleModel;
+              this.Type= this.TypeModel;
+            }else{
+              this.ProdServ.getNamesB(Product['referenceProduit']).subscribe(NamesBoutiques =>{
+                this.displayDialog=false;
+                this.displayDialog1=true;
+                this.TableBoutique=NamesBoutiques;
+              })
+            }
+          }
+        })
+      }else{
+        this.messageService.add({
+          key: 'SS',
+          severity: 'danger',
+          summary: 'Recherche de Produit',
+          detail: 'Produit est Invalide',
+          life: 4000,
+        });
       }
     })
+  }
+  pdf() {
+    const options = {
+      name:'Boutique.pdf',
+      image: {type:'jpeg'},
+      html2canvas:{},
+      jsPDF: {orientation: 'landscape'}
+    }
+    const element : Element = document.getElementById("Cadre");
+    html2pdf().from(element).set(options).save();
   }
 }
 

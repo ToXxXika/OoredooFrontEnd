@@ -67,9 +67,10 @@ export class ProduitComponent implements OnInit {
     });
    //=================================================
     this.LoadLists();
-          this.ProdServ.getSpecifiedProduct(LoginComponent.P.agentcommercialByCin.idbou).subscribe(Pr =>{
+    let y: number = + localStorage.getItem('BoutiqueLocal');
+    console.log(y);
+          this.ProdServ.getSpecifiedProduct(y).subscribe(Pr =>{
             this.Produits = Pr ;
-            console.log(this.Produits)
           });
   }
 

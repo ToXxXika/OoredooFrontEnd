@@ -28,7 +28,13 @@ export class ProduitService {
  // ==============================================================
   private UrlGetTypeByMarque='http://localhost:8080/Produit/getTypeByMarque';
   private UrlgetLibelle='http://localhost:8080/Produit/geTLibelle';
+  private UrlGetNameBoutiquesByrefProd='http://localhost:8080/BoutiqueProduit/getNameBoutiquesByRefProd';
 
+  public getNamesB(ref:any){
+    let opts : {params : HttpParams};
+    opts = {params : new HttpParams({fromString:'refprod='+ref})};
+    return this.http.get<string[]>(this.UrlGetNameBoutiquesByrefProd,opts)
+  }
 
   public getLibelle(marque:any,type:any){
     let opts : {params : HttpParams};
@@ -58,7 +64,7 @@ export class ProduitService {
   public recupererProduit() {
     return  this.http.get<Produit[]>(this.UrlProduit);
   }
-  public recupererBoutiqueProduit(str):Observable<any>{
+  public recupererBoutiqueProduit():Observable<any>{
     return this.http.get<any[]>(this.UrlgetBoutProd);
   }
   public getType(){

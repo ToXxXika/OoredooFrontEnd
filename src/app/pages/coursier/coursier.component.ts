@@ -25,7 +25,7 @@ export class CoursierComponent implements OnInit {
       console.log("im empty");
       this.router.navigateByUrl("/login");
     }else {
-      this.ProdService.getTransfertBycin(LoginComponent.P.cin).subscribe(Transferts => {
+      this.ProdService.getTransfertBycin(localStorage.getItem('CinLocal')).subscribe(Transferts => {
         this.Transfert = Transferts;
         console.log(this.Transfert);
       })
@@ -35,7 +35,6 @@ export class CoursierComponent implements OnInit {
   }
   //le Coursier confirme que La Boutique a recevoir le produit specifique en cliquant dans ce buttone ( avec Changement de Taille de  quantite disponible dans la boutique Destinataire
   // a faire
-    //Suppression d'alert lors de l'arrivage de produit
   //lehne lazemna nzidou Update 3le Stock de Produit 3and el Boutique li mchetlha el sel3a
   AcceptTransfert(event: Transfert){
     this.TransfertService.UpdateTransfer(event.referenceTransfert,1).subscribe(upTransfert =>{
@@ -70,7 +69,7 @@ export class CoursierComponent implements OnInit {
 
   //le Coursier demarre le Transfert  Dans cette Fonction seulement le Statut de Coursier se change  (Disponibilité = false )
   StartTransfert() {
-    this.UserService.UpdateCoursierStatus(LoginComponent.P.cin,false).subscribe( Update =>{
+    this.UserService.UpdateCoursierStatus(localStorage.getItem('CinLocal'),false).subscribe( Update =>{
       console.log(Update);
       if(Update) {
         this.messageService.add({
