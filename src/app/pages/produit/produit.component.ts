@@ -86,7 +86,7 @@ export class ProduitComponent implements OnInit{
     const InputType = this.TypeModel;
     const InputLibelle =this.LibelleModel;
     //switch with real values
-    this.T.idBoutique="";
+    this.T.idBoutique=localStorage.getItem("BoutiqueLocal");
     this.T.marque=InputMarque;
     this.T.type=InputType;
     this.T.libelle= InputLibelle ;

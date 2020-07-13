@@ -16,7 +16,7 @@ import {TableModule} from 'primeng/table';
 import {CommonModule} from '@angular/common';
 import {DataViewModule} from 'primeng/dataview';
 import {DialogModule} from 'primeng/dialog';
-import { SplitButtonModule} from 'primeng';
+import {ConfirmDialogModule, SplitButtonModule} from 'primeng';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {CalendarModule} from 'primeng/calendar'
 import {DetailcommandeComponent} from '../../pages/detailcommande/detailcommande.component';
@@ -40,7 +40,8 @@ import {DetailcommandeComponent} from '../../pages/detailcommande/detailcommande
         DialogModule,
         SplitButtonModule,
         InputNumberModule,
-        CalendarModule
+        CalendarModule,
+        ConfirmDialogModule
 
 
     ],

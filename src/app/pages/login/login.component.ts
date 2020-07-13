@@ -37,8 +37,11 @@ export class LoginComponent implements OnInit {
   constructor(private inscriptionService: InscriptionService, private router: Router,private cookieService: CookieService,private messageService: MessageService) {}
  public LoadLocalstorageKeys(KeyName: string):string{
      switch (KeyName) {
-       case 'KeyUser': {
-         return 'UsernameLocal';
+       case 'KeyNom': {
+         return 'NomLocal';
+       }
+       case 'KeyPrenom':{
+         return 'PrenomLocal';
        }
        case 'KeyRole':{
          return  'RoleLocal';
@@ -56,43 +59,38 @@ export class LoginComponent implements OnInit {
        case 'KeyTag':{
          return  'Localuser';
        }
+       case 'KeyTel':{
+         return 'NumLocal';
+       }
        default : alert('KeyNotFound');
        break;
      }
   }
   VerifUser() {
-   let namesurname: string;
     const username = (document.getElementById('cin') as HTMLInputElement).value;
     const motdepasse = (document.getElementById('motdepasse') as HTMLInputElement).value;
     if (this.CheckInputs(username,motdepasse)) {
-
-       this.inscriptionService.login(username,motdepasse).subscribe( response=> {
-         console.log(response);
+      this.inscriptionService.login(username,motdepasse).subscribe( response=> {
            if(response['authenticated']=== true){
              let RoleGuard = "" ;
              this.inscriptionService.GetUserRole(username).subscribe(data => {
-               console.log(data);
-               namesurname= data["nom"]+" "+data["prenom"];
-               localStorage.setItem(this.LoadLocalstorageKeys('KeyUser'),namesurname);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyNom'),data['nom']);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyPrenom'),data['prenom']);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
+               localStorage.setItem(this.LoadLocalstorageKeys('KeyTel'),data['numTel']);
                switch (data["role"]) {
                  case 'Admin' : {
                    RoleGuard ="Admin";
                     LoginComponent.P.Verification(data,true);
                     localStorage.setItem("Role",RoleGuard)
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
-                    localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
-                    localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
-
                    this.router.navigateByUrl('/dashboard');
                    break;
                  }
                  case 'Coursier': {
                    RoleGuard="Coursier";
                    LoginComponent.P.Verification(data,true);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
-
                    localStorage.setItem("Role",RoleGuard)
                    this.router.navigateByUrl('/coursier');
                    break;
@@ -100,11 +98,7 @@ export class LoginComponent implements OnInit {
                  case 'AgentCommercial': {
                    RoleGuard="AgentCommercial";
                    LoginComponent.P.Verification(data,true);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyCin'),data['cin']);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyMail'),data['mail']);
                    localStorage.setItem(this.LoadLocalstorageKeys('KeyBoutique'),data['agentcommercialByCin'].idbou);
-                   localStorage.setItem(this.LoadLocalstorageKeys('KeyTag'),data['username']);
-
                    localStorage.setItem("Role",RoleGuard)
                    this.router.navigateByUrl('/produits');
                    break;
@@ -119,7 +113,6 @@ export class LoginComponent implements OnInit {
        },error => {
          this.messageService.add({key:"SS",severity:"warn",summary:"Gestion des utilisateurs",detail:"Utilisateur introuvable"});
        })
-
     }
   }
   //Pour la verification des Champs du formulaire

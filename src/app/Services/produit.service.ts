@@ -104,7 +104,7 @@ export class ProduitService {
   public getProdByMLT(libelle:string,marque:string,type:number){
     let opts : { params : HttpParams};
     opts = { params : new HttpParams({fromString:'marque='+marque+'&type='+type+'&libelle='+libelle})};
-    return this.http.get<Produit[]>(this.UrlgetProdByMLT,opts)
+    return this.http.get<Produit>(this.UrlgetProdByMLT,opts)
   }
 
   constructor(private http: HttpClient) { }

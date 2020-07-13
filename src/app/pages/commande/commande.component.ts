@@ -3,19 +3,20 @@ import {CommandeService} from '../../Services/commande.service';
 import {Commande} from '../../models/commande';
 import {DetailsCommande} from '../../models/DetailsCommande';
 import {ProduitService} from '../../Services/produit.service';
-import {MenuItem, MessageService} from 'primeng';
+import {ConfirmationService, MenuItem, MessageService} from 'primeng';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DataTransferService} from '../../Services/data-transfer.service';
 import {TestClass} from '../../models/TestClass';
 import {LoginComponent} from '../login/login.component';
 import * as html2pdf from 'html2pdf.js';
+import {Alert} from '../../models/alert';
 
 @Component({
   selector: 'app-commande',
   templateUrl: './commande.component.html',
   styleUrls: ['./commande.component.css'],
-  providers:[MessageService]
+  providers:[MessageService,ConfirmationService]
 })
 export class CommandeComponent implements OnInit {
   items: MenuItem[];
@@ -35,7 +36,7 @@ export class CommandeComponent implements OnInit {
   Quantite: number;
   RefProd:any;
   TableBoutique:any[]=[];
-  constructor(private DataTransfer: DataTransferService,private Router: Router,private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
+  constructor(private confirmationService: ConfirmationService,private DataTransfer: DataTransferService,private Router: Router,private messageService:  MessageService,private fb : FormBuilder,private CommServ: CommandeService, private ProdServ: ProduitService,private router : Router) {
   }
 
   @Output() Obj = new EventEmitter<DetailsCommande>();
@@ -257,11 +258,35 @@ export class CommandeComponent implements OnInit {
               this.Libelle= this.LibelleModel;
               this.Type= this.TypeModel;
             }else{
-              this.ProdServ.getNamesB(Product['referenceProduit']).subscribe(NamesBoutiques =>{
-                this.displayDialog=false;
-                this.displayDialog1=true;
-                this.TableBoutique=NamesBoutiques;
-              })
+               this.confirmationService.confirm({
+                 message: 'Voulez vous attendre l arrivage du Produit ?',
+                 // a faire y3aychk
+                 accept: ()=>{
+                   let A : Alert = new Alert();
+                   A.libelle=this.LibelleModel;
+                   A.marque=this.MarqueModel;
+                   A.type = this.TypeModel;
+                   A.idBoutique= +localStorage.getItem("BoutiqueLocal")
+                    this.ProdServ.saveAlert(A).subscribe(response =>{
+                      console.log(response);
+                      if (response === true){
+                        this.messageService.add({key: 'SS', severity: 'success', summary: 'Travail Terminé', detail:'demande de Transfert Ajouté'});
+                      }else {
+                        this.messageService.add({key: 'SS', severity: 'warn', summary: 'Oops!', detail:'Alert non Ajouté'});
+                      }
+                    },error =>  this.messageService.add({key: 'SS', severity: 'danger', summary: ':D', detail:'Erreur est survenue'+ error}));
+
+                 },
+                 reject: ()=>{
+                   this.ProdServ.getNamesB(Product['referenceProduit']).subscribe(NamesBoutiques =>{
+                     this.displayDialog=false;
+                     this.displayDialog1=true;
+                     //Transfert From here
+                     this.TableBoutique=NamesBoutiques;
+                   })
+                 },
+               })
+
             }
           }
         })

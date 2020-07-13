@@ -3,6 +3,7 @@ import {Personne} from "../../models/personne";
 import {MessageService} from "primeng/api";
 import {InscriptionService} from "../../Services/inscription.service";
 import {MenuItem} from 'primeng/api';
+import {ProduitService} from '../../Services/produit.service';
 
 @Component({
   selector: 'app-register',
@@ -24,8 +25,10 @@ export class RegisterComponent implements OnInit {
   items:MenuItem[];
   NumTel: number;
   Role: any;
+  displayboutique : boolean ;
   clonedPersonne: { [s: string]: Personne; } = {};
-  constructor(private messageService: MessageService,private inscriptionS: InscriptionService ) { }
+  Boutiques: any[]=[];
+  constructor(private Prod: ProduitService,private messageService: MessageService,private inscriptionS: InscriptionService ) { }
   ClearData(){
     this.Mail='';
     this.MotPasse='';
@@ -60,9 +63,15 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.displayboutique=true;
     this.inscriptionS.Utilisateurs().subscribe(UserData =>{
       this.Users = UserData;
     });
+    this.Prod.recupererBoutique().subscribe(Bout=>{
+       for(let X of Bout){
+         this.Boutiques.push({label:X.nomBoutique,value:X.idBoutique});
+       }
+    })
     this.columns = [
       {label: 'Administrateur', value :'Admin'},
       { label: 'Coursier', value: 'Coursier' },
@@ -88,5 +97,13 @@ export class RegisterComponent implements OnInit {
 
   onRowEditSave(rowData: any) {
 
+  }
+
+  ChangeRole(Role: any) {
+    if(Role === "AgentCommercial"){
+      this.displayboutique=false;
+    }else {
+      this.displayboutique=true;
+    }
   }
 }

@@ -20,7 +20,8 @@
           Nom :  <Input pInputText [(ngModel)]="Nom" ngDefaultControl type="text">
           Prenom :  <Input pInputText [(ngModel)]="Prenom" ngDefaultControl type="text">
           Numero : <Input pInputText [(ngModel)]="NumTel" ngDefaultControl type="text">
-          Role : <p-dropdown [options]="columns" ngDefaultControl [(ngModel)]="Role"></p-dropdown>
+          Role : <p-dropdown [options]="columns" ngDefaultControl (onChange)="ChangeRole(Role)" [(ngModel)]="Role"></p-dropdown>
+          Boutique : <p-dropdown [options]="Boutiques" ngDefaultControl [disabled]="displayboutique"></p-dropdown>
           <p-footer>
             <button pButton class="ui-button-rounded" (click)="AjoutPersonne()" label="Créer un Compte"></button>
           </p-footer>

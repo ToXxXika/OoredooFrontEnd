@@ -139,6 +139,7 @@ export class TransfertComponent implements AfterViewInit {
      }
     });
   }
+  //this algoritmh is used
   ExtractionAltitude(L:string) {
     let CH = L;
     let n = CH.indexOf('@');
@@ -151,14 +152,14 @@ export class TransfertComponent implements AfterViewInit {
   ExtractionLocation(L:string) {
     let Pos = this.ExtractionAltitude(L);
      this.ProdService.getProdByMLT(this.Alert.libelle,this.Alert.marque,this.Alert.type).subscribe(Prod =>{
-       console.log(Prod);
+       console.log(Prod.boutiqueproduitsByReferenceProduit);
        let loop2 = async() =>{
          //initialize Tables Here
          this.TableRes = [];
          this.TableRes.length = 0 ;
          this.BPTable.length = 0 ;
-         for (let i = 0; i < Prod[0].boutiqueproduitsByReferenceProduit.length; i++) {
-           this.ProdService.getBoutiqueById(Prod[0].boutiqueproduitsByReferenceProduit[i].idBou).subscribe(Result => {
+         for (let i = 0; i < Prod.boutiqueproduitsByReferenceProduit.length; i++) {
+           this.ProdService.getBoutiqueById(Prod.boutiqueproduitsByReferenceProduit[i].idBou).subscribe(Result => {
              this.BPTable.push(Result);
            });
          }
@@ -167,7 +168,7 @@ export class TransfertComponent implements AfterViewInit {
          if(this.BPTable.length == 0){
            this.messageService.add({key:"SS",severity:'warn',summary:'Manque de Produit',detail:'Ce Produit est introuvable dans nos Boutiques '})
          }else {
-           //here we calculate Destination and push results in TableRes  . The Reason we've used Promise
+           //here we calculate Destination and push results in TableRes  . The Reason we've used Promise is : Angular is Working
            for (let i = 0; i < this.BPTable.length; i++) {
              let Pos2 = this.ExtractionAltitude(this.BPTable[i].localisation);
              this.Res = this.getCoordinates(Pos, Pos2);
@@ -298,7 +299,6 @@ export class TransfertComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.GetDataFromDataTransferService();
-
   }
 }
 
